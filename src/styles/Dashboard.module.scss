@@ -1,0 +1,467 @@
+.dashboard {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding-bottom: 80px; /* Space for bottom navigation */
+}
+
+.header {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  padding: 1.5rem 1rem;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatarContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar {
+  width: 56px !important;
+  height: 56px !important;
+  border: 3px solid white;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(59, 130, 246, 0.1);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 
+      0 6px 20px rgba(0, 0, 0, 0.2),
+      0 0 0 2px rgba(59, 130, 246, 0.3);
+  }
+}
+
+.avatarFallback {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  width: 100%;
+  border-radius: 50%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.onlineIndicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  background: #10b981;
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.greetingContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.greetingText {
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: block;
+  margin: 0;
+}
+
+.userName {
+  color: #1e293b;
+  font-weight: 800;
+  font-size: 1.25rem;
+  margin: 0;
+  background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.notificationButton {
+  background: white;
+  border: 2px solid #f1f5f9;
+  padding: 0.75rem;
+  border-radius: 16px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  
+  &:hover {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.notificationIcon {
+  font-size: 1.25rem;
+  color: #64748b;
+  transition: color 0.2s ease;
+}
+
+.notificationButton:hover .notificationIcon {
+  color: #3b82f6;
+}
+
+.notificationDot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+  animation: notificationPulse 2s infinite;
+}
+
+@keyframes notificationPulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.1); 
+    opacity: 0.8;
+  }
+}
+
+.content {
+  padding: 1.5rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.progressSection {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.progressText {
+  margin-bottom: 1rem;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.progressTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.progressPercentage {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.progressSubtext {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.coursesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.courseCard {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
+  }
+}
+
+.courseImage {
+  width: 100%;
+  height: 120px;
+  background: #f1f5f9;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.courseImagePlaceholder {
+  width: 80px;
+  height: 80px;
+  background: #e2e8f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.courseTitle {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.courseLessons {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.nextLesson {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.lessonInfo {
+  flex: 1;
+}
+
+.lessonCategory {
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.lessonTitle {
+  font-weight: 700;
+  color: #1f2937;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.lessonSubtitle {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.playButton {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  
+  &:hover {
+    background: #2563eb;
+  }
+}
+
+.goals {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.goalItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.goalIcon {
+  width: 40px;
+  height: 40px;
+  background: #dbeafe;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.goalContent {
+  flex: 1;
+}
+
+.goalTitle {
+  color: #1f2937;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.goalText {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  padding: 0.75rem 0;
+  display: flex;
+  justify-content: space-around;
+  z-index: 100;
+  box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 0.75rem;
+  font-weight: 500;
+  
+  &.active {
+    color: #3b82f6;
+  }
+}
+
+.navIcon {
+  width: 24px;
+  height: 24px;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 1rem;
+  }
+  
+  .coursesGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .nextLesson {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .progressSection {
+    padding: 1rem;
+  }
+  
+  .header {
+    padding: 1rem 0.75rem;
+  }
+
+  .avatar {
+    width: 48px !important;
+    height: 48px !important;
+    border-width: 2px;
+    border-radius: 50%;
+  }
+
+  .onlineIndicator {
+    width: 12px;
+    height: 12px;
+    bottom: 1px;
+    right: 1px;
+  }
+
+  .userName {
+    font-size: 1.1rem;
+  }
+
+  .greetingText {
+    font-size: 0.85rem;
+  }
+
+  .notificationButton {
+    padding: 0.6rem;
+    border-radius: 12px;
+  }
+
+  .notificationIcon {
+    font-size: 1.1rem;
+  }
+
+  .notificationDot {
+    width: 8px;
+    height: 8px;
+    top: 4px;
+    right: 4px;
+  }
+} 
