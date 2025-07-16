@@ -14,11 +14,28 @@ interface StudentTableProps {
 }
 
 const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
+  // Việt hóa các tiêu đề cột
+  const headers = [
+    'Họ và tên',
+    'Email',
+    'Số điện thoại',
+    'Lớp',
+    'Trạng thái',
+    'Hành động',
+  ];
+
+  // Việt hóa trạng thái
+  const getStatusLabel = (status: string) => {
+    if (status === 'Active' || status === 'Đang hoạt động') return 'Đang hoạt động';
+    if (status === 'Inactive' || status === 'Ngừng hoạt động') return 'Ngừng hoạt động';
+    return status;
+  };
+
   return (
     <table className={styles.table}>
       <thead>
         <tr className={styles.theadRow}>
-          {['Name', 'Email', 'Phone', 'Class', 'Status', 'Actions'].map(header => (
+          {headers.map(header => (
             <th key={header} className={styles.cell}>{header}</th>
           ))}
         </tr>
@@ -33,17 +50,17 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
             <td className={styles.cell}>
               <span
                 className={
-                  student.status === 'Active'
+                  getStatusLabel(student.status) === 'Đang hoạt động'
                     ? styles.statusActive
                     : styles.statusInactive
                 }
               >
-                {student.status}
+                {getStatusLabel(student.status)}
               </span>
             </td>
             <td className={styles.cell}>
               <a href="#" className={styles.actionLink}>
-                View
+                Xem
               </a>
             </td>
           </tr>

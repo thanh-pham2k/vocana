@@ -35,76 +35,75 @@ const ListeningQuestionForm: React.FC<ListeningQuestionFormProps> = ({
   return (
     <div className={styles.questionSection}>
       <div className={styles.questionHeader}>
-        <h3 className={styles.questionTitle}>Audio File URL</h3>
+        <h3 className={styles.questionTitle}>Đường dẫn file audio</h3>
         <button
           type="button"
           onClick={() => onDelete(listening.id)}
           className={styles.deleteButton}
         >
-          Delete Listening Question
+          Xóa bài nghe
         </button>
       </div>
       <input
         type="text"
-        placeholder="Upload Audio File"
+        placeholder="Nhập đường dẫn hoặc tải lên file audio"
         value={listening.audioFile}
         onChange={e => onUpdate(listening.id, 'audioFile', e.target.value)}
         className={styles.input}
       />
-      <h3 className={styles.subSectionTitle}>Multiple Choice Questions for this Audio</h3>
+      <h3 className={styles.subSectionTitle}>Câu hỏi</h3>
       {listening.mcqs.map((mcq, mcqIndex) => (
         <div key={mcq.id} className={styles.subQuestionSection}>
           <div className={styles.questionHeader}>
-            <h4 className={styles.questionTitle}>{`Question ${mcqIndex + 1}`}</h4>
+            <h4 className={styles.questionTitle}>{`Câu hỏi ${mcqIndex + 1}`}</h4>
             <button
               type="button"
               onClick={() => onDeleteMcq(listening.id, mcq.id)}
               className={styles.deleteButton}
             >
-              Delete
+              Xóa
             </button>
           </div>
           <textarea
-            placeholder="Enter the question stem"
+            placeholder="Nhập nội dung câu hỏi"
             value={mcq.question}
             onChange={e => onMcqUpdate(listening.id, mcq.id, 'question', e.target.value)}
             className={styles.textarea}
           />
-          <h4 className={styles.optionsTitle}>Options</h4>
+          <h4 className={styles.optionsTitle}>Đáp án lựa chọn</h4>
           <div className={styles.optionsGrid}>
             {mcq.options.map((option, idx) => (
               <div key={idx} className={styles.optionItem}>
-                <div className={styles.optionLabel}>{`Option ${String.fromCharCode(65 + idx)}`}</div>
+                <div className={styles.optionLabel}>{`Đáp án ${String.fromCharCode(65 + idx)}`}</div>
                 <input
-                  placeholder={`Enter option ${String.fromCharCode(65 + idx)}`}
+                  placeholder={`Nhập đáp án ${String.fromCharCode(65 + idx)}`}
                   value={option}
                   onChange={e => {
                     onMcqUpdate(listening.id, mcq.id, 'options', e.target.value, idx);
                   }}
                   className={styles.input}
                 />
-               
               </div>
             ))}
           </div>
-          <h4 className={styles.correctAnswerTitle}>Correct Answer</h4>
+          <h4 className={styles.correctAnswerTitle}>Đáp án đúng</h4>
           <input
             type="text"
-            placeholder="Correct Answer"
+            placeholder="Nhập đáp án đúng"
             value={mcq.correct}
             onChange={e => onMcqUpdate(listening.id, mcq.id, 'correct', e.target.value)}
             className={styles.input}
           />
-          <h4 className={styles.explanationTitle}>Answer Explanation (Optional)</h4>
+          <h4 className={styles.explanationTitle}>Giải thích đáp án (không bắt buộc)</h4>
           <textarea
-            placeholder="Explanation for the correct answer"
+            placeholder="Giải thích cho đáp án đúng"
             value={mcq.answerExplanation || ''}
             onChange={e => onMcqUpdate(listening.id, mcq.id, 'answerExplanation', e.target.value)}
             className={styles.textarea}
           />
         </div>
       ))}
-      <button type="button" onClick={() => onAddMcq(listening.id)} className={styles.addButton}>Add MCQ Question for this Audio</button>
+      <button type="button" onClick={() => onAddMcq(listening.id)} className={styles.addButton}>Thêm câu hỏi trắc nghiệm cho bài nghe</button>
     </div>
   );
 };

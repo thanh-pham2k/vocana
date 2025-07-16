@@ -29,39 +29,38 @@ const FillInTheBlankQuestionForm: React.FC<FillInTheBlankQuestionFormProps> = ({
   return (
     <div className={styles.questionSection}>
       <div className={styles.questionHeader}>
-        <h3 className={styles.questionTitle}>Fill-in-the-Blank Question</h3>
+        <h3 className={styles.questionTitle}>Câu hỏi điền từ</h3>
         <button
           type="button"
           onClick={() => onDelete(question.id)}
           className={styles.deleteButton}
         >
-          Delete Question
+          Xóa câu hỏi
         </button>
       </div>
       <textarea
-        placeholder="Enter the question with blanks indicated by underscores (e.g., The capital of France is ___.)"
+        placeholder="Nhập câu hỏi với chỗ trống bằng dấu gạch dưới (ví dụ: Thủ đô của Pháp là ___.)"
         value={question.question}
         onChange={e => onUpdate(question.id, 'question', e.target.value)}
         className={styles.textarea}
       />
-      <h4 className={styles.optionsTitle}>Answers</h4>
+      <h4 className={styles.optionsTitle}>Đáp án</h4>
       <div className={styles.optionsGrid}>
         {question.answers.map((answer, idx) => (
           <div key={idx} className={styles.optionItem}>
             <input
-              placeholder={`Answer ${idx + 1}`}
+              placeholder={`Đáp án ${idx + 1}`}
               value={answer.answer}
               onChange={e => onUpdate(question.id, 'answers', e.target.value, idx)}
               className={styles.input}
             />
-          
           </div>
         ))}
       </div>
-      <button type="button" onClick={() => onAddAnswer(question.id)} className={styles.addButtonSmall}>Add another Answer</button>
-      <h4 className={styles.explanationTitle}>Answer Explanation (Optional)</h4>
+      <button type="button" onClick={() => onAddAnswer(question.id)} className={styles.addButtonSmall}>Thêm đáp án</button>
+      <h4 className={styles.explanationTitle}>Giải thích đáp án (không bắt buộc)</h4>
       <textarea
-        placeholder="Explanation for the correct answer"
+        placeholder="Giải thích cho đáp án đúng"
         value={question.answerExplanation || ''}
         onChange={e => onUpdate(question.id, 'answerExplanation', e.target.value)}
         className={styles.textarea}

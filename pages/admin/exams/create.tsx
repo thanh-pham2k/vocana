@@ -43,15 +43,14 @@ interface FillInTheBlankQuestion {
 }
 
 const navItems = [
-  { label: 'Courses', path: '/admin/courses' },
-  { label: 'Students', path: '/admin' },
-  { label: 'Exams', path: '/admin/exams' },
+  { label: 'Học viên', path: '/admin' },
+  { label: 'Đề thi', path: '/admin/exams' },
 ];
 const questionTypes = [
-  { label: 'Multiple Choice (MCQ)', value: 'mcq' },
-  { label: 'Reading Comprehension', value: 'reading' },
-  { label: 'Listening Comprehension', value: 'listening' },
-  { label: 'Fill-in-the-Blank', value: 'fill_in_the_blank' },
+  { label: 'Trắc nghiệm (MCQ)', value: 'mcq' },
+  { label: 'Điền từ', value: 'fill_in_the_blank' },
+  { label: 'Đọc hiểu', value: 'reading' },
+  { label: 'Nghe hiểu', value: 'listening' },
 ];
 
 export default function CreateExamPage() {
@@ -373,11 +372,11 @@ export default function CreateExamPage() {
       <Sidebar navItems={navItems} activePath={router.pathname} />
       <main className={styles.main}>
         <div style={{ marginBottom: 16 }}>
-          <span style={{ color: '#6366f1', fontWeight: 500, cursor: 'pointer' }} onClick={() => router.push('/admin/exams')}>Exams</span>
-          <span style={{ color: '#6b7280' }}> / Create Exam</span>
+          <span style={{ color: '#6366f1', fontWeight: 500, cursor: 'pointer' }} onClick={() => router.push('/admin/exams')}>Đề thi</span>
+          <span style={{ color: '#6b7280' }}> / Tạo đề thi</span>
         </div>
-        <h1 className={styles.headerTitle}>Create Exam</h1>
-        <div style={{ fontWeight: 600, fontSize: 18, margin: '32px 0 12px' }}>Question Type Selection</div>
+        <h1 className={styles.headerTitle}>Tạo đề thi</h1>
+        <div style={{ fontWeight: 600, fontSize: 18, margin: '32px 0 12px' }}>Chọn loại câu hỏi</div>
         <div style={{ display: 'flex', gap: 32, borderBottom: '1px solid #e5e7eb', marginBottom: 32 }}>
           {questionTypes.map(type => (
             <div
@@ -406,7 +405,7 @@ export default function CreateExamPage() {
             fillInTheBlankQuestions,
           };
           console.log('Exam Data:', examData);
-          alert('Exam Saved! Check console for data.');
+          alert('Lưu đề thi thành công! Xem dữ liệu trên console.');
         }}>
           {activeType === 'mcq' && (
             <div>
@@ -425,7 +424,7 @@ export default function CreateExamPage() {
                   className={styles.addButton}
                   style={{ background: '#10b981', color: '#fff', marginBottom: 24 }}
                 >
-                  Import Questions from CSV
+                  Nhập câu hỏi từ file CSV
                 </button>
               </div>
               {mcqQuestions.map((mcq, index) => (
@@ -439,7 +438,7 @@ export default function CreateExamPage() {
                   onDeleteOption={(id, optionIndex) => handleMcqChange(id, 'options', mcqQuestions.find(q => q.id === id)!.options.filter((_, i) => i !== optionIndex) as string[], optionIndex)}
                 />
               ))}
-              <button type="button" className={styles.addButton} onClick={addMcqQuestion} style={{ background: '#6366f1', color: '#fff', marginBottom: 32 }}>Add another MCQ Question</button>
+              <button type="button" className={styles.addButton} onClick={addMcqQuestion} style={{ background: '#6366f1', color: '#fff', marginBottom: 32 }}>Thêm câu hỏi trắc nghiệm</button>
             </div>
           )}
           {activeType === 'reading' && (
@@ -456,7 +455,7 @@ export default function CreateExamPage() {
                   onMcqUpdate={handleReadingMcqUpdate}
                 />
               ))}
-              <button type="button" className={styles.addButton} onClick={addReadingQuestion} style={{ background: '#6366f1', color: '#fff', marginBottom: 32 }}>Add another Reading Question</button>
+              <button type="button" className={styles.addButton} onClick={addReadingQuestion} style={{ background: '#6366f1', color: '#fff', marginBottom: 32 }}>Thêm bài đọc mới</button>
             </div>
           )}
           {activeType === 'listening' && (
@@ -472,7 +471,7 @@ export default function CreateExamPage() {
                   onMcqUpdate={handleListeningMcqUpdate}
                 />
               ))}
-              <button type="button" className={styles.addButton} onClick={addListeningQuestion} style={{ background: '#6366f1', color: '#fff', marginBottom: 32 }}>Add another Listening Question</button>
+              <button type="button" className={styles.addButton} onClick={addListeningQuestion} style={{ background: '#6366f1', color: '#fff', marginBottom: 32 }}>Thêm bài nghe mới</button>
             </div>
           )}
           {activeType === 'fill_in_the_blank' && (
@@ -487,11 +486,11 @@ export default function CreateExamPage() {
                   onDeleteAnswer={deleteFillInTheBlankAnswer}
                 />
               ))}
-              <button type="button" className={styles.addButton} onClick={addFillInTheBlankQuestion} style={{ background: '#6366f1', color: '#fff', marginBottom: 32 }}>Add another Fill-in-the-Blank Question</button>
+              <button type="button" className={styles.addButton} onClick={addFillInTheBlankQuestion} style={{ background: '#6366f1', color: '#fff', marginBottom: 32 }}>Thêm câu hỏi điền từ</button>
             </div>
           )}
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button type="submit" className={styles.addButton} style={{ minWidth: 140, fontSize: 16, background: '#e5e7eb', color: '#111827' }}>Save Exam</button>
+            <button type="submit" className={styles.addButton} style={{ minWidth: 140, fontSize: 16, background: '#e5e7eb', color: '#111827' }}>Lưu đề thi</button>
           </div>
         </form>
       </main>

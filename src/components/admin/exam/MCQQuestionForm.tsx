@@ -29,30 +29,30 @@ const MCQQuestionForm: React.FC<MCQQuestionFormProps> = ({
       <div className={styles.questionHeader}>
         <h3 className={styles.questionTitle}>
           {typeof questionIndex === 'number'
-            ? `Question ${questionIndex + 1}`
-            : 'Question'}
+            ? `Câu hỏi ${questionIndex + 1}`
+            : 'Câu hỏi'}
         </h3>
         <button
           type="button"
           onClick={() => onDelete(question.id)}
           className={styles.deleteButton}
         >
-          Delete
+          Xóa
         </button>
       </div>
       <textarea
-        placeholder="Enter your question here"
+        placeholder="Nhập nội dung câu hỏi..."
         value={question.question}
         onChange={e => onUpdate(question.id, 'question', e.target.value)}
         className={styles.textarea}
       />
-      <h4 className={styles.optionsTitle}>Options</h4>
+      <h4 className={styles.optionsTitle}>Đáp án lựa chọn</h4>
       <div className={styles.optionsGrid}>
         {question.options.map((option, idx) => (
           <div key={idx} className={styles.optionItem}>
-            <div className={styles.optionLabel}>{`Option ${String.fromCharCode(65 + idx)}`}</div>
+            <div className={styles.optionLabel}>{`Đáp án ${String.fromCharCode(65 + idx)}`}</div>
             <input
-              placeholder={`Enter option ${String.fromCharCode(65 + idx)}`}
+              placeholder={`Nhập đáp án ${String.fromCharCode(65 + idx)}`}
               value={option}
               onChange={e => {
                 onUpdate(question.id, 'options', e.target.value, idx);
@@ -62,17 +62,17 @@ const MCQQuestionForm: React.FC<MCQQuestionFormProps> = ({
           </div>
         ))}
       </div>
-      <h4 className={styles.correctAnswerTitle}>Correct Answer</h4>
+      <h4 className={styles.correctAnswerTitle}>Đáp án đúng</h4>
       <input
         type="text"
-        placeholder="Correct Answer"
+        placeholder="Nhập đáp án đúng"
         value={question.correct}
         onChange={e => onUpdate(question.id, 'correct', e.target.value)}
         className={styles.input}
       />
-      <h4 className={styles.explanationTitle}>Answer Explanation (Optional)</h4>
+      <h4 className={styles.explanationTitle}>Giải thích đáp án (không bắt buộc)</h4>
       <textarea
-        placeholder="Explanation for the correct answer"
+        placeholder="Giải thích cho đáp án đúng"
         value={question.answerExplanation || ''}
         onChange={e => onUpdate(question.id, 'answerExplanation', e.target.value)}
         className={styles.textarea}

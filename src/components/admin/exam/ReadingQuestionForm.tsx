@@ -18,7 +18,7 @@ interface ReadingQuestion {
 
 interface ReadingQuestionFormProps {
   reading: ReadingQuestion;
-  index?: number; // Added index as optional prop
+  index?: number;
   onUpdate: (id: string, field: keyof ReadingQuestion, value: string | string[]) => void;
   onDelete: (id: string) => void;
   onAddMcq: (readingId: string) => void;
@@ -28,7 +28,7 @@ interface ReadingQuestionFormProps {
 
 const ReadingQuestionForm: React.FC<ReadingQuestionFormProps> = ({
   reading,
-  index, // Accept index as prop
+  index,
   onUpdate,
   onDelete,
   onAddMcq,
@@ -39,55 +39,55 @@ const ReadingQuestionForm: React.FC<ReadingQuestionFormProps> = ({
     <div className={styles.questionSection}>
       <div className={styles.questionHeader}>
         <h3 className={styles.questionTitle}>
-          {typeof index === 'number' ? `Reading Passage ${index + 1}` : 'Reading Passage'}
+          {typeof index === 'number' ? `Bài đọc ${index + 1}` : 'Bài đọc'}
         </h3>
         <button
           type="button"
           onClick={() => onDelete(reading.id)}
           className={styles.deleteButton}
         >
-          Delete Passage
+          Xóa bài đọc
         </button>
       </div>
       <textarea
-        placeholder="Enter the reading passage here..."
+        placeholder="Nhập đoạn văn bài đọc tại đây..."
         value={reading.passage}
         onChange={e => onUpdate(reading.id, 'passage', e.target.value)}
         className={styles.textarea}
       />
       <input
         type="text"
-        placeholder="Upload an image (optional)"
+        placeholder="Đường dẫn ảnh minh họa (không bắt buộc)"
         value={reading.image || ''}
         onChange={e => onUpdate(reading.id, 'image', e.target.value)}
         className={styles.input}
       />
-      <h3 className={styles.subSectionTitle}>Multiple Choice Questions for this Passage</h3>
+      <h3 className={styles.subSectionTitle}>Các câu hỏi trắc nghiệm cho bài đọc này</h3>
       {reading.mcqs.map((mcq, mcqIndex) => (
         <div key={mcq.id} className={styles.subQuestionSection}>
           <div className={styles.questionHeader}>
-            <h4 className={styles.questionTitle}>{`Question ${mcqIndex + 1}`}</h4>
+            <h4 className={styles.questionTitle}>{`Câu hỏi ${mcqIndex + 1}`}</h4>
             <button
               type="button"
               onClick={() => onDeleteMcq(reading.id, mcq.id)}
               className={styles.deleteButton}
             >
-              Delete
+              Xóa
             </button>
           </div>
           <textarea
-            placeholder="Enter the question stem here..."
+            placeholder="Nhập nội dung câu hỏi..."
             value={mcq.question}
             onChange={e => onMcqUpdate(reading.id, mcq.id, 'question', e.target.value)}
             className={styles.textarea}
           />
-          <h4 className={styles.optionsTitle}>Options</h4>
+          <h4 className={styles.optionsTitle}>Đáp án lựa chọn</h4>
           <div className={styles.optionsGrid}>
             {mcq.options.map((option, idx) => (
               <div key={idx} className={styles.optionItem}>
-                <div className={styles.optionLabel}>{`Option ${String.fromCharCode(65 + idx)}`}</div>
+                <div className={styles.optionLabel}>{`Đáp án ${String.fromCharCode(65 + idx)}`}</div>
                 <input
-                  placeholder={`Enter option ${String.fromCharCode(65 + idx)}`}
+                  placeholder={`Nhập đáp án ${String.fromCharCode(65 + idx)}`}
                   value={option}
                   onChange={e => {
                     onMcqUpdate(reading.id, mcq.id, 'options', e.target.value, idx);
@@ -97,24 +97,24 @@ const ReadingQuestionForm: React.FC<ReadingQuestionFormProps> = ({
               </div>
             ))}
           </div>
-          <h4 className={styles.correctAnswerTitle}>Correct Answer</h4>
+          <h4 className={styles.correctAnswerTitle}>Đáp án đúng</h4>
           <input
             type="text"
-            placeholder="Correct Answer"
+            placeholder="Nhập đáp án đúng"
             value={mcq.correct}
             onChange={e => onMcqUpdate(reading.id, mcq.id, 'correct', e.target.value)}
             className={styles.input}
           />
-          <h4 className={styles.explanationTitle}>Answer Explanation (Optional)</h4>
+          <h4 className={styles.explanationTitle}>Giải thích đáp án (không bắt buộc)</h4>
           <textarea
-            placeholder="Explanation for the correct answer"
+            placeholder="Giải thích cho đáp án đúng"
             value={mcq.answerExplanation || ''}
             onChange={e => onMcqUpdate(reading.id, mcq.id, 'answerExplanation', e.target.value)}
             className={styles.textarea}
           />
         </div>
       ))}
-      <button type="button" onClick={() => onAddMcq(reading.id)} className={styles.addButton}>Add MCQ Question for this Passage</button>
+      <button type="button" onClick={() => onAddMcq(reading.id)} className={styles.addButton}>Thêm câu hỏi trắc nghiệm cho bài đọc</button>
     </div>
   );
 };
