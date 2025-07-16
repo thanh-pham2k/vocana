@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, ReactNode } from 'react';
+import { useState, createContext, useContext, ReactNode, ReactElement } from 'react';
 import { login as apiLogin } from './api';
 
 interface AuthContextType {
@@ -10,7 +10,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }): ReactElement {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState<string | null>(null);
 
@@ -28,6 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { success: false, error: result.error };
       }
     } catch (error) {
+      console.error('Login error:', error);
       return { success: false, error: 'Đã có lỗi xảy ra' };
     }
   };
