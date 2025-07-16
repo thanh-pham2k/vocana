@@ -55,15 +55,6 @@ const MCQQuestionForm: React.FC<MCQQuestionFormProps> = ({
               }}
               className={styles.input}
             />
-            {question.options.length > 1 && (
-              <button
-                type="button"
-                onClick={() => onDeleteOption(question.id, idx)}
-                className={styles.deleteOptionButton}
-              >
-                X
-              </button>
-            )}
           </div>
         ))}
       </div>

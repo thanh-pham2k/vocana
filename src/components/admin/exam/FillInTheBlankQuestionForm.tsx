@@ -25,7 +25,6 @@ const FillInTheBlankQuestionForm: React.FC<FillInTheBlankQuestionFormProps> = ({
   onUpdate,
   onDelete,
   onAddAnswer,
-  onDeleteAnswer,
 }) => {
   return (
     <div className={styles.questionSection}>
@@ -55,15 +54,7 @@ const FillInTheBlankQuestionForm: React.FC<FillInTheBlankQuestionFormProps> = ({
               onChange={e => onUpdate(question.id, 'answers', e.target.value, idx)}
               className={styles.input}
             />
-            {question.answers.length > 1 && (
-              <button
-                type="button"
-                onClick={() => onDeleteAnswer(question.id, idx)}
-                className={styles.deleteOptionButton}
-              >
-                X
-              </button>
-            )}
+          
           </div>
         ))}
       </div>

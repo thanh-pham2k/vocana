@@ -83,15 +83,7 @@ const ListeningQuestionForm: React.FC<ListeningQuestionFormProps> = ({
                   }}
                   className={styles.input}
                 />
-                {mcq.options.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => onMcqUpdate(listening.id, mcq.id, 'options', mcq.options.filter((_, i) => i !== idx))}
-                    className={styles.deleteOptionButton}
-                  >
-                    X
-                  </button>
-                )}
+               
               </div>
             ))}
           </div>
