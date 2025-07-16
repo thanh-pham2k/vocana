@@ -18,6 +18,7 @@ interface ReadingQuestion {
 
 interface ReadingQuestionFormProps {
   reading: ReadingQuestion;
+  index?: number; // Added index as optional prop
   onUpdate: (id: string, field: keyof ReadingQuestion, value: string | string[]) => void;
   onDelete: (id: string) => void;
   onAddMcq: (readingId: string) => void;
@@ -27,6 +28,7 @@ interface ReadingQuestionFormProps {
 
 const ReadingQuestionForm: React.FC<ReadingQuestionFormProps> = ({
   reading,
+  index, // Accept index as prop
   onUpdate,
   onDelete,
   onAddMcq,
@@ -36,7 +38,9 @@ const ReadingQuestionForm: React.FC<ReadingQuestionFormProps> = ({
   return (
     <div className={styles.questionSection}>
       <div className={styles.questionHeader}>
-        <h3 className={styles.questionTitle}>Reading Passage</h3>
+        <h3 className={styles.questionTitle}>
+          {typeof index === 'number' ? `Reading Passage ${index + 1}` : 'Reading Passage'}
+        </h3>
         <button
           type="button"
           onClick={() => onDelete(reading.id)}
@@ -93,7 +97,6 @@ const ReadingQuestionForm: React.FC<ReadingQuestionFormProps> = ({
               </div>
             ))}
           </div>
-          <button type="button" onClick={() => onMcqUpdate(reading.id, mcq.id, 'options', [...mcq.options, ''])} className={styles.addButtonSmall}>Add Option</button>
           <h4 className={styles.correctAnswerTitle}>Correct Answer</h4>
           <input
             type="text"

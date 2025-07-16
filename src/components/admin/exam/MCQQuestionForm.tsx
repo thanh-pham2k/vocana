@@ -11,6 +11,7 @@ interface MCQQuestion {
 
 interface MCQQuestionFormProps {
   question: MCQQuestion;
+  questionIndex?: number;
   onUpdate: (id: string, field: keyof MCQQuestion, value: string | string[], optionIndex?: number) => void;
   onDelete: (id: string) => void;
   onAddOption: (id: string) => void;
@@ -19,15 +20,18 @@ interface MCQQuestionFormProps {
 
 const MCQQuestionForm: React.FC<MCQQuestionFormProps> = ({
   question,
+  questionIndex,
   onUpdate,
   onDelete,
-  onAddOption,
-  onDeleteOption,
 }) => {
   return (
     <div className={styles.questionSection}>
       <div className={styles.questionHeader}>
-        <h3 className={styles.questionTitle}>Question</h3>
+        <h3 className={styles.questionTitle}>
+          {typeof questionIndex === 'number'
+            ? `Question ${questionIndex + 1}`
+            : 'Question'}
+        </h3>
         <button
           type="button"
           onClick={() => onDelete(question.id)}
@@ -58,7 +62,6 @@ const MCQQuestionForm: React.FC<MCQQuestionFormProps> = ({
           </div>
         ))}
       </div>
-      <button type="button" onClick={() => onAddOption(question.id)} className={styles.addButtonSmall}>Add Option</button>
       <h4 className={styles.correctAnswerTitle}>Correct Answer</h4>
       <input
         type="text"

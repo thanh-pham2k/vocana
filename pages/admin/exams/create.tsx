@@ -396,7 +396,7 @@ export default function CreateExamPage() {
             </div>
           ))}
         </div>
-        <form style={{ maxWidth: 520 }} onSubmit={e => {
+        <form style={{ maxWidth: 1024 }} onSubmit={e => {
           e.preventDefault();
           const examData = {
             type: activeType,
@@ -428,10 +428,11 @@ export default function CreateExamPage() {
                   Import Questions from CSV
                 </button>
               </div>
-              {mcqQuestions.map((mcq) => (
+              {mcqQuestions.map((mcq, index) => (
                 <MCQQuestionForm
                   key={mcq.id}
                   question={mcq}
+                  questionIndex={index}
                   onUpdate={handleMcqChange}
                   onDelete={deleteMcqQuestion}
                   onAddOption={(id) => handleMcqChange(id, 'options', [...mcqQuestions.find(q => q.id === id)!.options, ''] as string[])}
@@ -443,10 +444,11 @@ export default function CreateExamPage() {
           )}
           {activeType === 'reading' && (
             <div>
-              {readingQuestions.map((reading) => (
+              {readingQuestions.map((reading, index) => (
                 <ReadingQuestionForm
                   key={reading.id}
                   reading={reading}
+                  index={index}
                   onUpdate={(id, field, value) => handleReadingChange(id, field as keyof ReadingQuestion, value as string | string[])}
                   onAddMcq={addReadingMcq}
                   onDelete={deleteReadingQuestion}

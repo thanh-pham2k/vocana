@@ -87,7 +87,6 @@ const ListeningQuestionForm: React.FC<ListeningQuestionFormProps> = ({
               </div>
             ))}
           </div>
-          <button type="button" onClick={() => onMcqUpdate(listening.id, mcq.id, 'options', [...mcq.options, ''])} className={styles.addButtonSmall}>Add Option</button>
           <h4 className={styles.correctAnswerTitle}>Correct Answer</h4>
           <input
             type="text"
