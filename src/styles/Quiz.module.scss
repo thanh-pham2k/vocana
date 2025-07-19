@@ -104,7 +104,6 @@
   width: 100%;
   max-width: 300px;
   height: 200px;
-  background: linear-gradient(135deg, #f3e8d3 0%, #e8dcc6 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -230,7 +229,7 @@
 
 /* Question Styles */
 .questionSection {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0rem;
 }
 
 .questionTitle {
@@ -539,7 +538,7 @@
   
   .content {
     padding: 1rem;
-    padding-bottom: 2rem;
+    padding-bottom: 0rem;
   }
   
   .actionSection {

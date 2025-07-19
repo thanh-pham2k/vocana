@@ -9,9 +9,9 @@ interface BottomNavProps {
 
 const navItems = [
   { id: 'home', label: 'Trang chủ', icon: '🏠', route: '/dashboard' },
-  { id: 'courses', label: 'Khóa học', icon: '📚', route: '/courses' },
-  { id: 'practice', label: 'Luyện tập', icon: '🎯', route: '/practice' },
-  { id: 'test', label: 'Kiểm tra', icon: '❓', route: '/test' },
+  // { id: 'courses', label: 'Khóa học', icon: '📚', route: '/courses' },
+  // { id: 'practice', label: 'Luyện tập', icon: '🎯', route: '/practice' },
+  { id: 'exam', label: 'Kiểm tra', icon: '❓', route: '/exam' },
   { id: 'settings', label: 'Cài đặt', icon: '⚙️', route: '/settings' },
 ];
 

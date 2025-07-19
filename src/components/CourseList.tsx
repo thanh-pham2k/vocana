@@ -5,9 +5,9 @@ import styles from '@/styles/Courses.module.scss';
 const recommendedCourses = [
   {
     id: 1,
-    title: 'Tiếng Nhật cho người mới bắt đầu',
-    description: 'Khóa học cơ bản từ Hiragana, Katakana đến giao tiếp hàng ngày.',
-    slug: 'tieng-nhat',
+    title: 'Lớp học cô Yến',
+    description: 'Khoá học tiếng Nhật cùng cô Yến',
+    slug: 'lop-hoc-co-yen',
     illustration: (
       <div style={{ 
         width: '120px', 
@@ -19,53 +19,53 @@ const recommendedCourses = [
         justifyContent: 'center',
         fontSize: '3rem'
       }}>
-        🎌
+        👩‍🏫
       </div>
     ),
     color: '#FFB6C1',
   },
-  {
-    id: 2,
-    title: 'Tiếng Nhật nâng cao',
-    description: 'Học Kanji, kính ngữ và ngữ pháp phức tạp cho trình độ cao.',
-    slug: 'tieng-nhat-nang-cao',
-    illustration: (
-      <div style={{ 
-        width: '120px', 
-        height: '120px', 
-        background: '#E6F3FF',
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '3rem'
-      }}>
-        📚
-      </div>
-    ),
-    color: '#B8D4F1',
-  },
-  {
-    id: 3,
-    title: 'Tiếng Nhật cho du lịch',
-    description: 'Các cụm từ thực tế khi du lịch Nhật Bản, ăn uống và mua sắm.',
-    slug: 'tieng-nhat-du-lich',
-    illustration: (
-      <div style={{ 
-        width: '120px', 
-        height: '120px', 
-        background: '#F0FFF0',
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '3rem'
-      }}>
-        🗾
-      </div>
-    ),
-    color: '#98FB98',
-  },
+  // {
+  //   id: 2,
+  //   title: 'Tiếng Nhật nâng cao',
+  //   description: 'Học Kanji, kính ngữ và ngữ pháp phức tạp cho trình độ cao.',
+  //   slug: 'tieng-nhat-nang-cao',
+  //   illustration: (
+  //     <div style={{ 
+  //       width: '120px', 
+  //       height: '120px', 
+  //       background: '#E6F3FF',
+  //       borderRadius: '50%',
+  //       display: 'flex',
+  //       alignItems: 'center',
+  //       justifyContent: 'center',
+  //       fontSize: '3rem'
+  //     }}>
+  //       📚
+  //     </div>
+  //   ),
+  //   color: '#B8D4F1',
+  // },
+  // {
+  //   id: 3,
+  //   title: 'Tiếng Nhật cho du lịch',
+  //   description: 'Các cụm từ thực tế khi du lịch Nhật Bản, ăn uống và mua sắm.',
+  //   slug: 'tieng-nhat-du-lich',
+  //   illustration: (
+  //     <div style={{ 
+  //       width: '120px', 
+  //       height: '120px', 
+  //       background: '#F0FFF0',
+  //       borderRadius: '50%',
+  //       display: 'flex',
+  //       alignItems: 'center',
+  //       justifyContent: 'center',
+  //       fontSize: '3rem'
+  //     }}>
+  //       🗾
+  //     </div>
+  //   ),
+  //   color: '#98FB98',
+  // },
 ];
 
 export default function CourseList() {

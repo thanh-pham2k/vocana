@@ -5,6 +5,7 @@ import CourseCard from '@/components/CourseCard';
 import LessonPreview from '@/components/LessonPreview';
 import BottomNav from '@/components/BottomNav';
 import styles from '@/styles/Dashboard.module.scss';
+import { RequireAuth } from '@/components/RequireAuth';
 
 // Mock data
 const userProgress = {
@@ -51,7 +52,7 @@ const dailyGoals = [
   },
 ];
 
-export default function DashboardPage() {
+function DashboardContent() {
   const [activeNav, setActiveNav] = useState('home');
 
   return (
@@ -107,4 +108,12 @@ export default function DashboardPage() {
       <BottomNav activeNav={activeNav} setActiveNav={setActiveNav} />
     </div>
   );
-} 
+}
+
+export default function DashboardPage() {
+  return (
+    <RequireAuth>
+      <DashboardContent />
+    </RequireAuth>
+  );
+}

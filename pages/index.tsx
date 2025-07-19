@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import styles from '@/styles/Login.module.scss';
+import { useAuth } from '@/lib/useAuth';
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Tên người dùng không được để trống'),
@@ -19,6 +20,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
+  const { login } = useAuth();
   
   const {
     register,
@@ -28,22 +30,21 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data: LoginForm) => {
+
+
+  const onSubmit = async (loginFormData: LoginForm) => {
     setIsLoading(true);
     setError('');
-    
-    // Mock login - check for admin/admin credentials
-    setTimeout(() => {
-      if (data.username === 'admin' && data.password === 'admin') {
-        console.log('Login successful:', data);
-        setIsLoading(false);
-        // Redirect to dashboard
-        router.push('/dashboard');
-      } else {
-        setError('Tên đăng nhập hoặc mật khẩu không đúng');
-        setIsLoading(false);
-      }
-    }, 1000);
+
+    const result = await login(loginFormData.username, loginFormData.password);
+
+    setIsLoading(false);
+
+    if(result.code === 0) {
+      router.push('/dashboard');
+    } else {
+      setError(result.message || 'Tên đăng nhập hoặc mật khẩu không đúng');
+    }
   };
 
   return (

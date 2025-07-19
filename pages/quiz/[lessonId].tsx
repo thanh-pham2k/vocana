@@ -237,19 +237,6 @@ export default function QuizPage() {
     setShowResult(false);
   };
 
-  const renderIllustration = () => {
-    return (
-      <div className={styles.illustrationContainer}>
-        <div className={styles.illustration}>
-          <div className={styles.readerIllustration}>
-            <div className={styles.readerFigure}>👩‍🎓</div>
-            <div className={styles.book}>📖</div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   const renderAudioPlayer = () => {
     if (currentQuestion.type !== 'listening-comprehension') return null;
 
@@ -337,11 +324,6 @@ export default function QuizPage() {
       </header>
 
       <div className={styles.content}>
-        {/* Illustration */}
-        {(currentQuestion.type === 'reading-comprehension' || currentQuestion.type === 'listening-comprehension') && 
-          renderIllustration()
-        }
-
         {/* Reading Passage */}
         {currentQuestion.type === 'reading-comprehension' && (
           <div className={styles.passageSection}>

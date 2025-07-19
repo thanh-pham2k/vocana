@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
 import styles from '@/styles/AdminPage.module.scss';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import * as XLSX from 'xlsx';
 import Sidebar from '../../../src/components/Sidebar';
+import FillInTheBlankQuestionForm from '../../../src/components/admin/exam/FillInTheBlankQuestionForm';
+import ListeningQuestionForm from '../../../src/components/admin/exam/ListeningQuestionForm';
 import MCQQuestionForm from '../../../src/components/admin/exam/MCQQuestionForm';
 import ReadingQuestionForm from '../../../src/components/admin/exam/ReadingQuestionForm';
-import ListeningQuestionForm from '../../../src/components/admin/exam/ListeningQuestionForm';
-import FillInTheBlankQuestionForm from '../../../src/components/admin/exam/FillInTheBlankQuestionForm';
-import { useRouter } from 'next/router';
-import * as XLSX from 'xlsx';
 
 interface MCQQuestion {
   id: string;
@@ -367,6 +367,43 @@ export default function CreateExamPage() {
     }
   };
 
+  const handleFillInTheBlankFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          try {
+            const questions: FillInTheBlankQuestion[] = [];
+            const csvData = e.target.result as string;
+            const lines = csvData.split('\n');
+            for (let i = 1; i < lines.length; i++) {
+              const currentLine = lines[i].trim();
+              if (currentLine) {
+                // Split only first two commas, in case explanation contains commas
+                const [question, answer, ...explanationParts] = currentLine.split(',');
+                if (question && answer) {
+                  questions.push({
+                    id: Date.now().toString() + '-' + i,
+                    question: question.trim(),
+                    answers: [{ id: Date.now().toString() + '-answer-' + i, answer: answer.trim() }],
+                    answerExplanation: explanationParts.length > 0 ? explanationParts.join(',').trim() : undefined,
+                  });
+                }
+              }
+            }
+            setFillInTheBlankQuestions(questions);
+            alert('Nhập câu hỏi điền từ thành công!');
+          } catch (error) {
+            console.error('Error importing fill-in-the-blank file:', error);
+            alert('Lỗi khi nhập câu hỏi điền từ từ file.');
+          }
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Sidebar navItems={navItems} activePath={router.pathname} />
@@ -476,6 +513,23 @@ export default function CreateExamPage() {
           )}
           {activeType === 'fill_in_the_blank' && (
             <div>
+              {/* Import from CSV UI */}
+              <div style={{ marginBottom: 16 }}>
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleFillInTheBlankFileUpload}
+                  style={{ marginBottom: 16, display: 'block' }}
+                />
+                <button
+                  type="button"
+                  className={styles.addButton}
+                  style={{ background: '#10b981', color: '#fff', marginBottom: 24 }}
+                  onClick={() => { /* just for UI consistency, file input handles import */ }}
+                >
+                  Nhập câu hỏi điền từ từ file CSV
+                </button>
+              </div>
               {fillInTheBlankQuestions.map((question) => (
                 <FillInTheBlankQuestionForm
                   key={question.id}

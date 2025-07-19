@@ -23,43 +23,54 @@ export interface Lesson {
   completed: boolean;
 }
 
+export interface Exam {
+  id: string;
+  title: string;
+  description: string;
+  level: string;
+  duration: number;
+  createdBy: string;
+  createdAt: string;
+}
+
 // Mock data
 const mockCourses: Course[] = [
   {
     id: 1,
-    title: 'Tiếng Nhật Cơ Bản',
+    title: "Tiếng Nhật Cơ Bản",
     lessons: 5,
     progress: 60,
-    image: '🎌',
-    description: 'Khóa học tiếng Nhật cơ bản từ Hiragana đến giao tiếp hàng ngày',
+    image: "🎌",
+    description:
+      "Khóa học tiếng Nhật cơ bản từ Hiragana đến giao tiếp hàng ngày",
   },
   {
     id: 2,
-    title: 'Tiếng Nhật Nâng Cao',
+    title: "Tiếng Nhật Nâng Cao",
     lessons: 2,
     progress: 0,
-    image: '📚',
-    description: 'Học Kanji và kính ngữ cho trình độ cao',
+    image: "📚",
+    description: "Học Kanji và kính ngữ cho trình độ cao",
   },
   {
     id: 3,
-    title: 'Tiếng Nhật Du Lịch',
+    title: "Tiếng Nhật Du Lịch",
     lessons: 2,
     progress: 0,
-    image: '🗾',
-    description: 'Khóa học tiếng Nhật thực tế cho du lịch Nhật Bản',
+    image: "🗾",
+    description: "Khóa học tiếng Nhật thực tế cho du lịch Nhật Bản",
   },
 ];
 
 const mockUserProgress: UserProgress = {
   percentage: 60,
-  courseName: 'Tiếng Nhật',
+  courseName: "Tiếng Nhật",
   completedLessons: 3,
   totalLessons: 5,
 };
 
 // Simulate API delay
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export async function getCourses(): Promise<Course[]> {
   await delay(500);
@@ -73,31 +84,116 @@ export async function getUserProgress(): Promise<UserProgress> {
 
 export async function getCourse(id: number): Promise<Course | null> {
   await delay(400);
-  return mockCourses.find(course => course.id === id) || null;
+  return mockCourses.find((course) => course.id === id) || null;
 }
 
-export async function updateCourseProgress(courseId: number, progress: number): Promise<void> {
+export async function updateCourseProgress(
+  courseId: number,
+  progress: number
+): Promise<void> {
   await delay(600);
-  const course = mockCourses.find(c => c.id === courseId);
+  const course = mockCourses.find((c) => c.id === courseId);
   if (course) {
     course.progress = progress;
   }
 }
 
 // Mock authentication
-export async function login(username: string, password: string): Promise<{ success: boolean; token?: string; error?: string }> {
-  await delay(1000);
-  
-  // Simple mock validation for admin/admin
-  if (username === 'admin' && password === 'admin') {
-    return {
-      success: true,
-      token: 'mock-jwt-token-admin-12345',
-    };
+export async function login(username: string, password: string): Promise<any> {
+  const response = await fetch("http://localhost:9000/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, password }),
+  });
+  return response.json();
+}
+
+export async function getMe(token: string) {
+  const res = await fetch('http://localhost:9000/auth/me', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.json(); // nên trả về { code: 0, data: { ...user } }
+}
+
+export async function getExams(token: string): Promise<Exam[]> {
+  const response = await fetch('http://localhost:9000/exam', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
-  
-  return {
-    success: false,
-    error: 'Tên đăng nhập hoặc mật khẩu không đúng',
+  const data = await response.json();
+  return data.data.items;
+}
+
+export interface MCQQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correct: string;
+  answerExplanation: string;
+  position: number | null;
+}
+
+export interface ReadingQuestion {
+  passage: string;
+  image: string;
+  mcqs: MCQQuestion[];
+  position: number | null;
+}
+
+export interface ListeningQuestion {
+  audioFile: string;
+  mcqs: MCQQuestion[];
+  answerExplanation: string;
+  position: number | null;
+}
+
+export interface FillInTheBlankQuestion {
+  id: string;
+  question: string;
+  answers: { answer: string }[];
+  answerExplanation: string;
+  position: number | null;
+}
+
+export interface ExamDetail {
+  exam: {
+    title: string;
+    description: string;
+    level: string;
+    duration: number;
+    created_by: string;
   };
-} 
+  questions: {
+    mcqQuestions: MCQQuestion[];
+    readingQuestions: ReadingQuestion[];
+    listeningQuestions: ListeningQuestion[];
+    fillInTheBlankQuestions: FillInTheBlankQuestion[];
+  };
+}
+
+export async function getExamDetails(examId: string, token: string): Promise<ExamDetail> {
+  const response = await fetch(`http://localhost:9000/exam/${examId}`,
+  {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  return data.data;
+}
