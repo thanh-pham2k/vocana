@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import BottomNav from '@/components/BottomNav';
 import styles from '@/styles/Practice.module.scss';
+import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 
 const skills = [
   { id: 'listen', label: 'Nghe', icon: '🎧' },
@@ -56,7 +57,7 @@ export default function PracticePage() {
           className={styles.backButton}
           onClick={handleBack}
         >
-          ←
+          <ArrowLeftIcon className={styles.icon} />
         </Button>
         <h1 className={styles.title}>Luyện tập</h1>
         <div></div>

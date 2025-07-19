@@ -58,14 +58,13 @@ export default function ReadingQuestion({
         <p className={styles.passageText}>{question.context.passage}</p>
       </div>
 
-      <h3 className={styles.questionSubtitle}>Câu hỏi trắc nghiệm</h3>
       <div className={styles.optionsSection}>
         {readingMcqs.length > 0 ? (
           readingMcqs.map((mcq, mcqIndex) => (
             <div key={mcq?.id ?? mcqIndex} className={styles.readingMcqBlock}>
-              <h4 className={styles.readingMcqQuestion}>
+              <p className={styles.readingMcqQuestion}>
                 {mcqIndex + 1}. {mcq?.question ?? ''}
-              </h4>
+              </p>
               <div
                 className={styles.optionsList}
                 style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}

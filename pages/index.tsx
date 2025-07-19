@@ -3,11 +3,11 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import styles from '@/styles/Login.module.scss';
 import { useAuth } from '@/lib/useAuth';
+import { FiEye } from 'react-icons/fi';
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Tên người dùng không được để trống'),
@@ -30,8 +30,6 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
-
-
   const onSubmit = async (loginFormData: LoginForm) => {
     setIsLoading(true);
     setError('');
@@ -40,10 +38,11 @@ export default function LoginPage() {
 
     setIsLoading(false);
 
-    if(result.code === 0) {
+    // Fix for lint: use result.success and result.error
+    if (result.code===0) {
       router.push('/dashboard');
     } else {
-      setError(result.message || 'Tên đăng nhập hoặc mật khẩu không đúng');
+      setError(result.error || 'Tên đăng nhập hoặc mật khẩu không đúng');
     }
   };
 
@@ -93,13 +92,59 @@ export default function LoginPage() {
             <label htmlFor="password" className={styles.label}>
               Mật khẩu
             </label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Mật khẩu"
-              {...register('password')}
-              className={styles.input}
-            />
+            <div
+              className={styles.passwordFieldContainer}
+              style={{ position: 'relative' }}
+            >
+              <Input
+                id="password"
+                type="password"
+                placeholder="Mật khẩu"
+                autoComplete="current-password"
+                {...register('password')}
+                className={`${styles.input} ${styles.passwordInput}`}
+                style={{
+                  paddingRight: 44, // space for the eye button
+                  borderRadius: '8px',
+                  border: '1px solid #d1d5db',
+                  fontSize: '1rem',
+                  height: '44px',
+                  boxShadow: '0 1px 2px 0 rgba(31,41,55,0.03)',
+                  transition: 'border 0.2s',
+                  width: '100%',
+                }}
+              />
+              <button
+                type="button"
+                aria-label="Hiện mật khẩu"
+                // Không cho phép chuyển đổi hiển thị mật khẩu
+                className={styles.eyeButton}
+                style={{
+                  position: 'absolute',
+                  right: 16,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: '#fff',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'not-allowed',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 32,
+                  width: 32,
+                  borderRadius: '50%',
+                  boxShadow: '0 1px 2px 0 rgba(31,41,55,0.06)',
+                  transition: 'background 0.2s',
+                  opacity: 0.6,
+                  pointerEvents: 'none',
+                }}
+                tabIndex={-1}
+                disabled
+              >
+                <FiEye size={20} color="#6b7280" />
+              </button>
+            </div>
             {errors.password && (
               <span className={styles.errorMessage}>{errors.password.message}</span>
             )}
@@ -113,18 +158,6 @@ export default function LoginPage() {
             {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
           </Button>
         </form>
-
-        <div className={styles.links}>
-          <Link href="/forgot-password" className={`${styles.link} ${styles.forgotPassword}`}>
-            Quên mật khẩu?
-          </Link>
-          <div className={styles.registerLink}>
-            <span className={styles.registerText}>Chưa có tài khoản? </span>
-            <Link href="/register" className={styles.link}>
-              Đăng ký ngay
-            </Link>
-          </div>
-        </div>
       </div>
     </div>
   );

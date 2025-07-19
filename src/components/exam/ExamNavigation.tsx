@@ -20,7 +20,6 @@ export default function ExamNavigation({
   onContinue,
   onComplete,
 }: ExamNavigationProps) {
-  const isDisabled = selectedAnswer === null && (displayType === 'mcq' || displayType === 'readingMcq' || displayType === 'listeningMcq');
 
   return (
     <div className={styles.actionSection}>
@@ -31,22 +30,20 @@ export default function ExamNavigation({
           onClick={onBack}
           disabled={currentQuestionIndex === 0}
         >
-          ← Quay lại
+          Quay lại
         </Button>
         
         {currentQuestionIndex < totalQuestions - 1 ? (
           <Button
             className={styles.continueButton}
             onClick={onContinue}
-            disabled={isDisabled}
           >
-            Tiếp tục →
+            Tiếp tục
           </Button>
         ) : (
           <Button
             className={styles.completeButton}
             onClick={onComplete}
-            disabled={isDisabled}
           >
             Hoàn thành
           </Button>

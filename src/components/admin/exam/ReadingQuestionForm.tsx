@@ -62,7 +62,7 @@ const ReadingQuestionForm: React.FC<ReadingQuestionFormProps> = ({
         onChange={e => onUpdate(reading.id, 'image', e.target.value)}
         className={styles.input}
       />
-      <h3 className={styles.subSectionTitle}>Các câu hỏi trắc nghiệm cho bài đọc này</h3>
+      <h3 className={styles.subSectionTitle}>Các câu hỏi cho bài đọc này</h3>
       {reading.mcqs.map((mcq, mcqIndex) => (
         <div key={mcq.id} className={styles.subQuestionSection}>
           <div className={styles.questionHeader}>
@@ -114,7 +114,7 @@ const ReadingQuestionForm: React.FC<ReadingQuestionFormProps> = ({
           />
         </div>
       ))}
-      <button type="button" onClick={() => onAddMcq(reading.id)} className={styles.addButton}>Thêm câu hỏi trắc nghiệm cho bài đọc</button>
+      <button type="button" onClick={() => onAddMcq(reading.id)} className={styles.addButton}>Thêm câu hỏi cho bài đọc</button>
     </div>
   );
 };

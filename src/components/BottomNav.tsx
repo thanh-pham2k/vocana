@@ -1,6 +1,7 @@
 import { clsx } from 'clsx';
 import { useRouter } from 'next/router';
 import styles from '@/styles/Dashboard.module.scss';
+import { useAuth } from '@/lib/useAuth';
 
 interface BottomNavProps {
   activeNav: string;
@@ -9,18 +10,21 @@ interface BottomNavProps {
 
 const navItems = [
   { id: 'home', label: 'Trang chủ', icon: '🏠', route: '/dashboard' },
-  // { id: 'courses', label: 'Khóa học', icon: '📚', route: '/courses' },
-  // { id: 'practice', label: 'Luyện tập', icon: '🎯', route: '/practice' },
   { id: 'exam', label: 'Kiểm tra', icon: '❓', route: '/exam' },
-  { id: 'settings', label: 'Cài đặt', icon: '⚙️', route: '/settings' },
+  // { id: 'settings', label: 'Cài đặt', icon: '⚙️', route: '/settings' },
+  { id: 'logout', label: 'Đăng xuất', icon: '🚪' }, // Removed route for logout
 ];
 
 export default function BottomNav({ activeNav, setActiveNav }: BottomNavProps) {
   const router = useRouter();
+  const { logout } = useAuth();
 
   const handleNavClick = (item: typeof navItems[0]) => {
     setActiveNav(item.id);
-    if (item.route) {
+    if (item.id === 'logout') {
+      logout();
+      router.push('/');
+    } else if (item.route) {
       router.push(item.route);
     }
   };

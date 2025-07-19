@@ -475,7 +475,7 @@ export default function CreateExamPage() {
                   onDeleteOption={(id, optionIndex) => handleMcqChange(id, 'options', mcqQuestions.find(q => q.id === id)!.options.filter((_, i) => i !== optionIndex) as string[], optionIndex)}
                 />
               ))}
-              <button type="button" className={styles.addButton} onClick={addMcqQuestion} style={{ background: '#6366f1', color: '#fff', marginBottom: 32 }}>Thêm câu hỏi trắc nghiệm</button>
+              <button type="button" className={styles.addButton} onClick={addMcqQuestion} style={{ background: '#6366f1', color: '#fff', marginBottom: 32 }}>Thêm câu hỏi</button>
             </div>
           )}
           {activeType === 'reading' && (

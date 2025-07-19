@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import BottomNav from '@/components/BottomNav';
 import LessonInfoModal from '@/components/LessonInfoModal';
 import styles from '@/styles/CourseDetail.module.scss';
+import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 
 interface Lesson {
   id: number;
@@ -150,7 +151,7 @@ export default function CourseDetailPage() {
           className={styles.backButton}
           onClick={handleBack}
         >
-          ←
+          <ArrowLeftIcon className={styles.icon} />
         </Button>
         <h1 className={styles.title}>{course.title}</h1>
         <div></div>

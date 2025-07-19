@@ -167,7 +167,6 @@ export default function ListeningQuestion({
     <div className={styles.questionSection}>
       {renderAudioPlayer(question.context.audioFile)}
 
-      <h3 className={styles.questionSubtitle}>Câu hỏi trắc nghiệm</h3>
       <h2 className={styles.questionNumber}>
         {questionNumber}. {question.question}
       </h2>

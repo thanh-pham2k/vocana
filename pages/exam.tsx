@@ -40,18 +40,23 @@ export default function ExamPage() {
       <Header />
       
       <div className={styles.content}>
-        <h1 style={{ fontSize: '2rem', fontWeight: '700', color: '#1f2937', marginBottom: '1rem', textAlign: 'center' }}>
-          Danh sách bài kiểm tra
-        </h1>
-        <div className={styles.lessonsList} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem', padding: '1rem' }}>
+        <div
+          className={styles.lessonsList}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: '1.25rem'
+          }}
+        >
           {exams.map((exam: Exam) => (
             <Card 
               key={exam.id} 
               className={styles.lessonItem}
               onClick={() => handleExamClick(exam)}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', background: 'white', border: '1px solid #e5e7eb', borderRadius: '12px', boxShadow: '0 1px 4px 0 rgba(31,41,55,0.04)', padding: '1.25rem'
+               }}
             >
-              <CardContent className={styles.lessonContent} style={{ padding: '1rem' }}>
+              <CardContent className={styles.lessonContent}>
                 <div className={styles.lessonInfo}>
                   <h3 className={styles.lessonTitle}>
                     {exam.title} ({exam.level})

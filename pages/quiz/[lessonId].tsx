@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@/components/ui/button';
 import styles from '@/styles/Quiz.module.scss';
+import { ArrowLeftIcon } from '@heroicons/react/24/solid'; // hoặc outline
 
 interface Question {
   id: number;
@@ -311,7 +312,7 @@ export default function QuizPage() {
           className={styles.closeButton}
           onClick={handleClose}
         >
-          ←
+          <ArrowLeftIcon className={styles.icon} />
         </Button>
         
         <h1 className={styles.headerTitle}>
@@ -342,7 +343,7 @@ export default function QuizPage() {
           )}
           {currentQuestion.type === 'reading-comprehension' && (
             <>
-              <h3 className={styles.questionSubtitle}>Câu hỏi trắc nghiệm</h3>
+              <h3 className={styles.questionSubtitle}>Câu hỏi</h3>
               <h2 className={styles.questionNumber}>
                 {currentQuestionIndex + 1}. {currentQuestion.question}
               </h2>
@@ -389,7 +390,7 @@ export default function QuizPage() {
               onClick={handleBack}
               disabled={currentQuestionIndex === 0}
             >
-              ← Quay lại
+              Quay lại
             </Button>
             
             {currentQuestionIndex < totalQuestions - 1 ? (
@@ -398,7 +399,7 @@ export default function QuizPage() {
                 onClick={handleContinue}
                 disabled={selectedAnswer === null}
               >
-                Tiếp tục →
+                Tiếp tục
               </Button>
             ) : (
               <Button

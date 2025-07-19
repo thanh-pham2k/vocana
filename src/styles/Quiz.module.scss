@@ -10,32 +10,51 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 1rem 1.25rem;
   background: white;
   border-bottom: 1px solid #e5e7eb;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
 
   .closeButton {
-    color: #6b7280;
-    font-size: 1.5rem;
+    color: #4b5563;
+    font-size: 1.25rem;
     padding: 0.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f3f4f6;
+      border-radius: 50%;
+    }
   }
 
   .headerTitle {
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #1f2937;
     margin: 0;
+    flex: 1;
+    text-align: center;
+    transform: translateX(-1rem); // đẩy nhẹ để tránh bị lệch do nút progressIndicator chiếm chỗ
   }
 
   .progressIndicator {
     background: #f3f4f6;
-    padding: 0.5rem 1rem;
-    border-radius: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
     font-size: 0.875rem;
     color: #6b7280;
     font-weight: 500;
   }
 }
+
 
 .menuButton {
   width: 40px;
@@ -233,7 +252,7 @@
 }
 
 .questionTitle {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 1rem;
@@ -241,22 +260,23 @@
 }
 
 .questionSubtitle {
-  font-size: 1.1rem;
+  font-size: 16px;
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 1rem;
 }
 
 .questionNumber {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 400;
   color: #1f2937;
   margin: 0;
   line-height: 1.4;
+  margin-bottom: 1rem;
 }
 
 .questionText {
-  font-size: 1rem;
+  font-size: 13px;
   color: #6b7280;
   line-height: 1.5;
   margin: 0;
@@ -289,7 +309,6 @@
   
   &.selected {
     border-color: #3b82f6;
-    background: #eff6ff;
     
     .optionRadio {
       border-color: #3b82f6;
@@ -317,7 +336,7 @@
 }
 
 .optionText {
-  font-size: 0.95rem;
+  font-size: 13px;
   color: #374151;
   font-weight: 500;
 }
@@ -359,31 +378,29 @@
 
 .navigationButtons {
   display: flex;
-  gap: 0;
+  gap: 1rem;
   align-items: center;
   max-width: 600px;
   margin: 0 auto;
   width: 100%;
+  background-color: #ffffff;
+  position: sticky;
+  bottom: 0;
 
   .backButton {
-    background: white;
-    color: #6b7280;
-    border: 1px solid #d1d5db;
-    border-right: none;
-    padding: 1rem 1.5rem;
-    border-radius: 12px 0 0 12px;
-    font-weight: 600;
     flex: 1;
-    width: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    min-height: 56px;
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    background-color: #e5e7eb;
+    color: #374151;
 
-    &:hover:not(:disabled) {
-      background: #f9fafb;
-      color: #374151;
+    &:hover {
+      background-color: #d1d5db;
     }
 
     &:disabled {
@@ -393,39 +410,39 @@
   }
 
   .continueButton, .completeButton {
-    background: #3b82f6;
-    color: white;
-    border: 1px solid #3b82f6;
-    padding: 1rem 1.5rem;
-    border-radius: 0 12px 12px 0;
-    font-weight: 600;
     flex: 1;
-    width: 50%;
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
-    min-height: 56px;
 
-    &:hover:not(:disabled) {
-      background: #2563eb;
-      border-color: #2563eb;
+    &.continueButton {
+      background-color: #2563eb;
+      color: #ffffff;
+
+      &:hover:not(:disabled) {
+        background-color: #1d4ed8;
+      }
+    }
+
+    &.completeButton {
+      background-color: #10b981;
+      color: #ffffff;
+
+      &:hover:not(:disabled) {
+        background-color: #059669;
+      }
     }
 
     &:disabled {
       background: #9ca3af;
-      border-color: #9ca3af;
       cursor: not-allowed;
-    }
-  }
-
-  .completeButton {
-    background: #10b981;
-    border-color: #10b981;
-    
-    &:hover:not(:disabled) {
-      background: #059669;
-      border-color: #059669;
     }
   }
 }
@@ -496,7 +513,6 @@
   border-radius: 0;
   font-weight: 600;
   font-size: 1rem;
-  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -547,9 +563,8 @@
 
   .navigationButtons {
     .backButton, .continueButton, .completeButton {
-      padding: 1.25rem 1rem;
+      padding: 0.75rem 1rem;
       font-size: 1rem;
-      min-height: 60px;
     }
   }
 
@@ -564,9 +579,8 @@
 
   .resultActions .retryButton,
   .resultActions .continueButton {
-    padding: 1.25rem 1rem;
+    padding: 0.75rem 1rem;
     font-size: 1rem;
-    min-height: 60px;
   }
   
   .illustration {

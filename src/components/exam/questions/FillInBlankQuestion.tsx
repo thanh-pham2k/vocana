@@ -50,7 +50,7 @@ export default function FillInBlankQuestion({
               padding: '0.75rem 1rem',
               border: 'none',
               borderRadius: '8px',
-              fontSize: '1.1rem',
+              fontSize: '13px',
               outline: 'none',
               background: 'transparent',
               color: '#1e293b',

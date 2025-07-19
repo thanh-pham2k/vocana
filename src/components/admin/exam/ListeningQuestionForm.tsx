@@ -103,7 +103,7 @@ const ListeningQuestionForm: React.FC<ListeningQuestionFormProps> = ({
           />
         </div>
       ))}
-      <button type="button" onClick={() => onAddMcq(listening.id)} className={styles.addButton}>Thêm câu hỏi trắc nghiệm cho bài nghe</button>
+      <button type="button" onClick={() => onAddMcq(listening.id)} className={styles.addButton}>Thêm câu hỏi cho bài nghe</button>
     </div>
   );
 };
