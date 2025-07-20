@@ -3,6 +3,7 @@ import ExamHeader from "@/components/exam/ExamHeader";
 import ExamNavigation from "@/components/exam/ExamNavigation";
 import ExamResult from "@/components/exam/ExamResult";
 import QuestionDisplay from "@/components/exam/QuestionDisplay";
+import QuestionNavigator from "@/components/exam/QuestionNavigator";
 import {
   ExamDetail,
   FillInTheBlankQuestion,
@@ -26,6 +27,7 @@ export default function ExamPage() {
   const [error, setError] = useState<string | null>(null);
   const [activeNav, setActiveNav] = useState("test");
   const [examStartTime, setExamStartTime] = useState<number>(Date.now());
+  const [showNavigator, setShowNavigator] = useState(false);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<
@@ -196,6 +198,10 @@ export default function ExamPage() {
     }
   };
 
+  const handleQuestionSelect = (index: number) => {
+    setCurrentQuestionIndex(index);
+  };
+
   const handleComplete = async () => {
     setSubmissionStatus('submitting');
     
@@ -279,7 +285,7 @@ export default function ExamPage() {
     // Submit exam result to API
     if (token && user && examId) {
       try {
-        const response = await submitExamResult({
+        await submitExamResult({
           examId: examId as string,
           userId: user.id,
           answers: apiAnswers,
@@ -289,7 +295,6 @@ export default function ExamPage() {
           completedAt: new Date().toISOString()
         }, token);
 
-        console.log('Exam result submitted successfully:', response);
         setSubmissionStatus('success');
       } catch (error) {
         console.error('Failed to submit exam result:', error);
@@ -392,6 +397,7 @@ export default function ExamPage() {
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={totalQuestions}
         onClose={handleClose}
+        onNavigatorOpen={() => setShowNavigator(true)}
       />
 
       <QuestionDisplay
@@ -411,6 +417,19 @@ export default function ExamPage() {
         onComplete={handleComplete}
         isSubmitting={submissionStatus === 'submitting'}
       />
+
+      {/* Question Navigator Modal */}
+      {showNavigator && (
+        <QuestionNavigator
+          examTitle={examDetails.exam.title}
+          currentQuestionIndex={currentQuestionIndex}
+          totalQuestions={totalQuestions}
+          questions={orderedQuestions}
+          userAnswers={userAnswers}
+          onQuestionSelect={handleQuestionSelect}
+          onClose={() => setShowNavigator(false)}
+        />
+      )}
 
       {showResult && (
         <BottomNav activeNav={activeNav} setActiveNav={setActiveNav} />

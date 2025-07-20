@@ -42,17 +42,7 @@
   width: 56px !important;
   height: 56px !important;
   border: 3px solid white;
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(59, 130, 246, 0.1);
   transition: all 0.3s ease;
-  
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 
-      0 6px 20px rgba(0, 0, 0, 0.2),
-      0 0 0 2px rgba(59, 130, 246, 0.3);
-  }
 }
 
 .avatarFallback {

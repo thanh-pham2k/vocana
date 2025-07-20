@@ -24,7 +24,6 @@ export default function LessonInfoModal({ lesson, isOpen, onClose }: LessonInfoM
   if (!isOpen || !lesson) return null;
 
   const handleStartLesson = () => {
-    console.log('Starting lesson:', lesson.id);
     onClose();
     // Navigate to quiz page
     router.push(`/quiz/${lesson.id}`);

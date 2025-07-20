@@ -52,6 +52,19 @@
     font-size: 0.875rem;
     color: #6b7280;
     font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #e5e7eb;
+      color: #374151;
+      transform: scale(1.05);
+    }
+    
+    &:active {
+      transform: scale(0.98);
+    }
   }
 }
 

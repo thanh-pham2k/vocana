@@ -7,6 +7,7 @@ interface ExamHeaderProps {
   currentQuestionIndex: number;
   totalQuestions: number;
   onClose: () => void;
+  onNavigatorOpen?: () => void;
 }
 
 export default function ExamHeader({
@@ -14,6 +15,7 @@ export default function ExamHeader({
   currentQuestionIndex,
   totalQuestions,
   onClose,
+  onNavigatorOpen,
 }: ExamHeaderProps) {
   return (
     <header className={styles.header}>
@@ -29,9 +31,26 @@ export default function ExamHeader({
         {examTitle}
       </h1>
       
-      <div className={styles.progressIndicator}>
+      <button 
+        className={styles.progressIndicator}
+        onClick={onNavigatorOpen}
+        style={{ 
+          cursor: onNavigatorOpen ? 'pointer' : 'default',
+          transition: 'all 0.2s ease'
+        }}
+        onMouseEnter={(e) => {
+          if (onNavigatorOpen) {
+            e.currentTarget.style.background = '#e5e7eb';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (onNavigatorOpen) {
+            e.currentTarget.style.background = '#f3f4f6';
+          }
+        }}
+      >
         {currentQuestionIndex + 1}/{totalQuestions}
-      </div>
+      </button>
     </header>
   );
 } 

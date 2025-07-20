@@ -18,7 +18,6 @@ export default function ExamPage() {
     if (token) {
       getExams(token)
         .then((data) => {
-          console.debug('data', data);
           setExams(data);
         })
         .catch((error) => console.error("Error fetching exams:", error));

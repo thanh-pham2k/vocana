@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 import { Progress } from '@/components/ui/progress';
 import Header from '@/components/Header';
 import CourseCard from '@/components/CourseCard';
@@ -54,6 +55,33 @@ const dailyGoals = [
 
 function DashboardContent() {
   const [activeNav, setActiveNav] = useState('home');
+  const [clickCount, setClickCount] = useState(0);
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const router = useRouter();
+
+  const handleSecretClick = () => {
+    setClickCount(prevCount => {
+      const newCount = prevCount + 1;
+      
+      // Reset timeout if exists
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current);
+      }
+      
+      // Navigate to admin if 5 clicks
+      if (newCount >= 5) {
+        router.push('/admin');
+        return 0;
+      }
+      
+      // Reset count after 3 seconds
+      clickTimeoutRef.current = setTimeout(() => {
+        setClickCount(0);
+      }, 3000);
+      
+      return newCount;
+    });
+  };
 
   return (
     <div className={styles.dashboard}>
@@ -63,7 +91,17 @@ function DashboardContent() {
         {/* Progress Section */}
         <div className={styles.progressSection}>
           <div className={styles.progressHeader}>
-            <div className={styles.progressTitle}>Tiến độ của bạn</div>
+            <div 
+              className={styles.progressTitle}
+              onClick={handleSecretClick}
+              style={{ 
+                cursor: 'pointer',
+                userSelect: 'none',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              Tiến độ của bạn
+            </div>
             <div className={styles.progressPercentage}>{userProgress.percentage}%</div>
           </div>
           <div className={styles.progressSubtext}>
