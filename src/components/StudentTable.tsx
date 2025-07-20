@@ -26,8 +26,8 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
 
   // Việt hóa trạng thái
   const getStatusLabel = (status: string) => {
-    if (status === 'Active' || status === 'Đang hoạt động') return 'Đang hoạt động';
-    if (status === 'Inactive' || status === 'Ngừng hoạt động') return 'Ngừng hoạt động';
+    if (status === 'active' || status === 'Active' || status === 'Đang hoạt động') return 'Đang hoạt động';
+    if (status === 'inactive' || status === 'Inactive' || status === 'Ngừng hoạt động') return 'Ngừng hoạt động';
     return status;
   };
 

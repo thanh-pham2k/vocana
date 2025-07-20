@@ -1,12 +1,14 @@
 import styles from '@/styles/AdminPage.module.scss';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import Sidebar from '../../../src/components/Sidebar';
 import FillInTheBlankQuestionForm from '../../../src/components/admin/exam/FillInTheBlankQuestionForm';
 import ListeningQuestionForm from '../../../src/components/admin/exam/ListeningQuestionForm';
 import MCQQuestionForm from '../../../src/components/admin/exam/MCQQuestionForm';
 import ReadingQuestionForm from '../../../src/components/admin/exam/ReadingQuestionForm';
+import { createExam, CreateExamRequest } from '@/lib/api';
+import { useAuth } from '@/lib/useAuth';
 
 interface MCQQuestion {
   id: string;
@@ -67,7 +69,20 @@ export default function CreateExamPage() {
   const [fillInTheBlankQuestions, setFillInTheBlankQuestions] = useState<FillInTheBlankQuestion[]>([
     { id: Date.now().toString(), question: '', answers: [{ id: Date.now().toString() + '-answer', answer: '' }] },
   ]);
+  const [examTitle, setExamTitle] = useState('');
+  const [examDescription, setExamDescription] = useState('');
+  const [examLevel, setExamLevel] = useState('A1');
+  const [examDuration, setExamDuration] = useState(60);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { user, token } = useAuth();
+
+  useEffect(() => {
+    if (!user || !token) {
+      router.push('/');
+    }
+  }, [user, token, router]);
 
   const addMcqQuestion = () => {
     setMcqQuestions([
@@ -404,6 +419,82 @@ export default function CreateExamPage() {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    if (!user || !token) {
+      setError('Không có quyền truy cập');
+      setLoading(false);
+      return;
+    }
+
+    const examData: CreateExamRequest = {
+      exam: {
+        title: examTitle,
+        description: examDescription,
+        level: examLevel,
+        duration: examDuration,
+        created_by: user.id,
+      },
+      questions: {
+        mcqQuestions: mcqQuestions.map(q => ({
+          question: q.question,
+          options: q.options,
+          correct: q.correct,
+          answerExplanation: q.answerExplanation,
+          position: null,
+        })),
+        readingQuestions: readingQuestions.map(rq => ({
+          passage: rq.passage,
+          image: rq.image,
+          mcqs: rq.mcqs.map(mcq => ({
+            question: mcq.question,
+            options: mcq.options,
+            correct: mcq.correct,
+            answerExplanation: mcq.answerExplanation,
+            position: null,
+          })),
+          position: null,
+        })),
+        listeningQuestions: listeningQuestions.map(lq => ({
+          audioFile: lq.audioFile,
+          mcqs: lq.mcqs.map(mcq => ({
+            question: mcq.question,
+            options: mcq.options,
+            correct: mcq.correct,
+            answerExplanation: mcq.answerExplanation,
+            position: null,
+          })),
+          answerExplanation: lq.answerExplanation,
+          position: null,
+        })),
+        fillInTheBlankQuestions: fillInTheBlankQuestions.map(fq => ({
+          question: fq.question,
+          answers: fq.answers.map(a => ({ answer: a.answer })),
+          answerExplanation: fq.answerExplanation,
+          position: null,
+        })),
+      },
+    };
+
+    try {
+      await createExam(examData, token);
+      alert('Đề thi đã được tạo thành công!');
+      router.push('/admin/exams');
+    } catch (err) {
+      setError('Lỗi khi tạo đề thi: ' + err);
+      console.error('Error creating exam:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!user || !token) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className={styles.container}>
       <Sidebar navItems={navItems} activePath={router.pathname} />
@@ -432,18 +523,58 @@ export default function CreateExamPage() {
             </div>
           ))}
         </div>
-        <form style={{ maxWidth: 1024 }} onSubmit={e => {
-          e.preventDefault();
-          const examData = {
-            type: activeType,
-            mcqQuestions,
-            readingQuestions,
-            listeningQuestions,
-            fillInTheBlankQuestions,
-          };
-          console.log('Exam Data:', examData);
-          alert('Lưu đề thi thành công! Xem dữ liệu trên console.');
-        }}>
+        <form style={{ maxWidth: 1024 }} onSubmit={handleSubmit}>
+          {error && <div style={{ color: 'red', marginBottom: 16 }}>{error}</div>}
+          <div style={{ marginBottom: 16 }}>
+            <label htmlFor="examName" style={{ display: 'block', marginBottom: 8 }}>Tên đề thi:</label>
+            <input
+              type="text"
+              id="examName"
+              value={examTitle}
+              onChange={(e) => setExamTitle(e.target.value)}
+              style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 16 }}
+              required
+            />
+          </div>
+          <div style={{ marginBottom: 16 }}>
+            <label htmlFor="examDescription" style={{ display: 'block', marginBottom: 8 }}>Mô tả đề thi:</label>
+            <textarea
+              id="examDescription"
+              value={examDescription}
+              onChange={(e) => setExamDescription(e.target.value)}
+              style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 16 }}
+              rows={4}
+            />
+          </div>
+          <div style={{ marginBottom: 16 }}>
+            <label htmlFor="examLevel" style={{ display: 'block', marginBottom: 8 }}>Trình độ:</label>
+            <select
+              id="examLevel"
+              value={examLevel}
+              onChange={(e) => setExamLevel(e.target.value)}
+              style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 16 }}
+              required
+            >
+              <option value="A1">A1 - Beginner</option>
+              <option value="A2">A2 - Elementary</option>
+              <option value="B1">B1 - Intermediate</option>
+              <option value="B2">B2 - Upper-Intermediate</option>
+              <option value="C1">C1 - Advanced</option>
+              <option value="C2">C2 - Proficiency</option>
+            </select>
+          </div>
+          <div style={{ marginBottom: 16 }}>
+            <label htmlFor="examDuration" style={{ display: 'block', marginBottom: 8 }}>Thời gian làm bài (phút):</label>
+            <input
+              type="number"
+              id="examDuration"
+              value={examDuration}
+              onChange={(e) => setExamDuration(Number(e.target.value))}
+              style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 16 }}
+              min="1"
+              required
+            />
+          </div>
           {activeType === 'mcq' && (
             <div>
               <div style={{ marginBottom: 16 }}>
@@ -544,7 +675,9 @@ export default function CreateExamPage() {
             </div>
           )}
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button type="submit" className={styles.addButton} style={{ minWidth: 140, fontSize: 16, background: '#e5e7eb', color: '#111827' }}>Lưu đề thi</button>
+            <button type="submit" className={styles.addButton} style={{ minWidth: 140, fontSize: 16, background: '#e5e7eb', color: '#111827' }} disabled={loading}>
+              {loading ? 'Đang tạo...' : 'Tạo đề thi'}
+            </button>
           </div>
         </form>
       </main>

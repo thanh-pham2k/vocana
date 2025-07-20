@@ -33,6 +33,33 @@ export interface Exam {
   createdAt: string;
 }
 
+// User interface for API response
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  passwordHash: string;
+  status: string;
+  createdAt: string;
+  fullName: string | null;
+  avatarUrl: string | null;
+  birthday: string | null;
+  targetLanguage: string | null;
+  targetLevel: string | null;
+  bio: string | null;
+}
+
+// Login response interface
+export interface LoginResponse {
+  code: number;
+  message: string;
+  data: {
+    accessToken: string;
+    refreshToken: string;
+    user: User;
+  };
+}
+
 // Mock data
 const mockCourses: Course[] = [
   {
@@ -99,7 +126,7 @@ export async function updateCourseProgress(
 }
 
 // Mock authentication
-export async function login(username: string, password: string): Promise<any> {
+export async function login(username: string, password: string): Promise<LoginResponse> {
   const response = await fetch("http://localhost:9000/auth/login", {
     method: "POST",
     headers: {
@@ -133,6 +160,99 @@ export async function getExams(token: string): Promise<Exam[]> {
   }
   const data = await response.json();
   return data.data.items;
+}
+
+export async function getUsers(token: string): Promise<User[]> {
+  const response = await fetch('http://localhost:9000/users', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  return data; // Based on your curl response, it returns array directly
+}
+
+// Create Exam interfaces and function
+export interface CreateExamRequest {
+  exam: {
+    title: string;
+    description: string;
+    level: string;
+    duration: number;
+    created_by: string;
+  };
+  questions: {
+    mcqQuestions: Array<{
+      question: string;
+      options: string[];
+      correct: string;
+      answerExplanation?: string;
+      position?: number | null;
+    }>;
+    readingQuestions: Array<{
+      passage: string;
+      image?: string;
+      mcqs: Array<{
+        question: string;
+        options: string[];
+        correct: string;
+        answerExplanation?: string;
+        position?: number | null;
+      }>;
+      position?: number | null;
+    }>;
+    listeningQuestions: Array<{
+      audioFile: string;
+      mcqs: Array<{
+        question: string;
+        options: string[];
+        correct: string;
+        answerExplanation?: string;
+        position?: number | null;
+      }>;
+      answerExplanation?: string;
+      position?: number | null;
+    }>;
+    fillInTheBlankQuestions: Array<{
+      question: string;
+      answers: Array<{
+        answer: string;
+      }>;
+      answerExplanation?: string;
+      position?: number | null;
+    }>;
+  };
+}
+
+export interface CreateExamResponse {
+  code: number;
+  message: string;
+}
+
+export async function createExam(
+  examData: CreateExamRequest,
+  token: string
+): Promise<CreateExamResponse> {
+  const response = await fetch('http://localhost:9000/exam', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(examData),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data;
 }
 
 export interface MCQQuestion {
