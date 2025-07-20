@@ -9,6 +9,7 @@ interface ExamNavigationProps {
   onBack: () => void;
   onContinue: () => void;
   onComplete: () => void;
+  isSubmitting?: boolean;
 }
 
 export default function ExamNavigation({
@@ -19,6 +20,7 @@ export default function ExamNavigation({
   onBack,
   onContinue,
   onComplete,
+  isSubmitting = false,
 }: ExamNavigationProps) {
 
   return (
@@ -28,7 +30,7 @@ export default function ExamNavigation({
           variant="ghost"
           className={styles.backButton}
           onClick={onBack}
-          disabled={currentQuestionIndex === 0}
+          disabled={currentQuestionIndex === 0 || isSubmitting}
         >
           Quay lại
         </Button>
@@ -37,6 +39,7 @@ export default function ExamNavigation({
           <Button
             className={styles.continueButton}
             onClick={onContinue}
+            disabled={isSubmitting}
           >
             Tiếp tục
           </Button>
@@ -44,8 +47,9 @@ export default function ExamNavigation({
           <Button
             className={styles.completeButton}
             onClick={onComplete}
+            disabled={isSubmitting}
           >
-            Hoàn thành
+            {isSubmitting ? 'Đang xử lý...' : 'Hoàn thành'}
           </Button>
         )}
       </div>

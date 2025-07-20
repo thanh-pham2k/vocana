@@ -8,6 +8,8 @@ import {
   FillInTheBlankQuestion,
   getExamDetails,
   MCQQuestion,
+  submitExamResult,
+  SubmitExamAnswer,
 } from "@/lib/api";
 import { useAuth } from "@/lib/useAuth";
 import styles from "@/styles/Quiz.module.scss"; // Reusing Quiz styles for consistency
@@ -18,11 +20,12 @@ import { useEffect, useState } from "react";
 export default function ExamPage() {
   const router = useRouter();
   const { examId } = router.query;
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const [examDetails, setExamDetails] = useState<ExamDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeNav, setActiveNav] = useState("test");
+  const [examStartTime, setExamStartTime] = useState<number>(Date.now());
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<
@@ -33,6 +36,14 @@ export default function ExamPage() {
   >([]);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [questionResults, setQuestionResults] = useState<Array<{
+    question: DisplayQuestion;
+    userAnswer: string | number | Record<string, string | number | null> | null;
+    isCorrect: boolean;
+    correctAnswer?: string;
+    explanation?: string;
+  }>>([]);
 
   const [orderedQuestions, setOrderedQuestions] = useState<DisplayQuestion[]>(
     []
@@ -43,6 +54,7 @@ export default function ExamPage() {
 
   useEffect(() => {
     if (examId && token) {
+      setExamStartTime(Date.now()); // Track start time when exam loads
       getExamDetails(examId as string, token)
         .then((data) => {
           setExamDetails(data);
@@ -184,24 +196,31 @@ export default function ExamPage() {
     }
   };
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
+    setSubmissionStatus('submitting');
+    
     let finalScore = 0;
+    const questionResults: Array<{
+      question: DisplayQuestion;
+      userAnswer: string | number | Record<string, string | number | null> | null;
+      isCorrect: boolean;
+      correctAnswer?: string;
+      explanation?: string;
+    }> = [];
+
     orderedQuestions.forEach((question, index) => {
       const userAnswer = userAnswers[index];
+      let isCorrect = false;
 
       if (question.displayType === "mcq") {
-        if (userAnswer === (question as MCQQuestion).correct) {
-          finalScore++;
-        }
+        isCorrect = userAnswer === (question as MCQQuestion).correct;
+        if (isCorrect) finalScore++;
       } else if (question.displayType === "fillInBlank") {
-        if (
-          (question as FillInTheBlankQuestion).answers.some(
-            (ans: { answer: string }) =>
-              ans.answer.toLowerCase() === (userAnswer as string)?.toLowerCase()
-          )
-        ) {
-          finalScore++;
-        }
+        isCorrect = (question as FillInTheBlankQuestion).answers.some(
+          (ans: { answer: string }) =>
+            ans.answer.toLowerCase() === (userAnswer as string)?.toLowerCase()
+        );
+        if (isCorrect) finalScore++;
       } else if (
         question.displayType === "readingMcq" ||
         question.displayType === "listeningMcq"
@@ -210,16 +229,80 @@ export default function ExamPage() {
           string,
           string | number | null
         >;
+        let correctCount = 0;
+        let totalMcqs = 0;
+        
         (question as DisplayQuestion & { mcqs: MCQQuestion[] }).mcqs.forEach(
           (nestedMcq) => {
+            totalMcqs++;
             if (nestedAnswers?.[nestedMcq.id] === nestedMcq.correct) {
+              correctCount++;
               finalScore++;
             }
           }
         );
+        
+        // Consider the whole block correct if all MCQs are correct
+        isCorrect = correctCount === totalMcqs && totalMcqs > 0;
+      }
+
+      // Add to questionResults for detailed view
+      questionResults.push({
+        question,
+        userAnswer,
+        isCorrect,
+      });
+    });
+
+    // Prepare answers for API submission
+    const apiAnswers: SubmitExamAnswer[] = orderedQuestions.map((question, index) => {
+      const userAnswer = userAnswers[index];
+      
+      if (question.displayType === 'readingMcq' || question.displayType === 'listeningMcq') {
+        return {
+          questionId: question.id,
+          questionType: question.displayType,
+          userAnswers: userAnswer as Record<string, string>
+        };
+      } else {
+        return {
+          questionId: question.id,
+          questionType: question.displayType,
+          userAnswer: userAnswer as string
+        };
       }
     });
+
+    // Calculate time spent in seconds
+    const timeSpent = Math.floor((Date.now() - examStartTime) / 1000);
+
+    // Submit exam result to API
+    if (token && user && examId) {
+      try {
+        const response = await submitExamResult({
+          examId: examId as string,
+          userId: user.id,
+          answers: apiAnswers,
+          score: finalScore,
+          totalQuestions: orderedQuestions.length,
+          timeSpent: timeSpent,
+          completedAt: new Date().toISOString()
+        }, token);
+
+        console.log('Exam result submitted successfully:', response);
+        setSubmissionStatus('success');
+      } catch (error) {
+        console.error('Failed to submit exam result:', error);
+        setSubmissionStatus('error');
+        // Still show results even if submission fails
+      }
+    } else {
+      console.warn('Missing required data for exam submission');
+      setSubmissionStatus('error');
+    }
+
     setScore(finalScore);
+    setQuestionResults(questionResults); // Store question results for detailed view
     setShowResult(true);
   };
 
@@ -229,6 +312,9 @@ export default function ExamPage() {
     setUserAnswers(new Array(orderedQuestions.length).fill(null));
     setScore(0);
     setShowResult(false);
+    setSubmissionStatus('idle');
+    setQuestionResults([]); // Reset question results on retry
+    setExamStartTime(Date.now()); // Reset start time for retry
   };
 
   if (loading) {
@@ -263,7 +349,38 @@ export default function ExamPage() {
           totalQuestions={totalQuestions}
           onRetry={handleRetry}
           onClose={handleClose}
+          questionResults={questionResults}
         />
+        {submissionStatus === 'submitting' && (
+          <div style={{ 
+            position: 'fixed', 
+            bottom: '20px', 
+            left: '50%', 
+            transform: 'translateX(-50%)', 
+            background: '#3b82f6', 
+            color: 'white', 
+            padding: '10px 20px', 
+            borderRadius: '8px',
+            zIndex: 1000 
+          }}>
+            Đang lưu kết quả...
+          </div>
+        )}
+        {submissionStatus === 'error' && (
+          <div style={{ 
+            position: 'fixed', 
+            bottom: '20px', 
+            left: '50%', 
+            transform: 'translateX(-50%)', 
+            background: '#ef4444', 
+            color: 'white', 
+            padding: '10px 20px', 
+            borderRadius: '8px',
+            zIndex: 1000 
+          }}>
+            Lỗi khi lưu kết quả!
+          </div>
+        )}
       </div>
     );
   }
@@ -292,6 +409,7 @@ export default function ExamPage() {
         onBack={handleBack}
         onContinue={handleContinue}
         onComplete={handleComplete}
+        isSubmitting={submissionStatus === 'submitting'}
       />
 
       {showResult && (

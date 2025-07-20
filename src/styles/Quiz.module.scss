@@ -498,7 +498,7 @@
   z-index: 100;
   padding: 1rem;
   display: flex;
-  gap: 0;
+  gap: 1rem;
   align-items: center;
   max-width: 600px;
   margin: 0 auto;
@@ -508,14 +508,15 @@
 .resultActions .retryButton,
 .resultActions .continueButton {
   flex: 1;
-  width: 50%;
-  padding: 1rem 1.5rem;
-  border-radius: 0;
+  padding: 12px 16px;
   font-weight: 600;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  background-color: #e5e7eb;
+  color: #374151;
 }
 
 .retryButton {
@@ -570,7 +571,6 @@
 
   .resultContainer {
     padding: 1rem;
-    padding-bottom: 120px;
   }
   
   .resultActions {

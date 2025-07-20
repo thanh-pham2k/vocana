@@ -2,6 +2,12 @@ import { MCQQuestion as MCQQuestionType } from '@/lib/api';
 import styles from '@/styles/Quiz.module.scss';
 import { useRef, useState, useEffect } from 'react';
 
+interface ListeningMcq {
+  id: string | number;
+  question: string;
+  options: string[];
+}
+
 interface ListeningQuestionProps {
   question: MCQQuestionType & {
     displayType: 'listeningMcq';
@@ -9,9 +15,11 @@ interface ListeningQuestionProps {
       audioFile: string;
       overallExplanation: string;
     };
+    mcqs?: ListeningMcq[];
+    options?: string[];
   };
-  selectedAnswer: string | number | null;
-  onAnswerSelect: (answer: string) => void;
+  selectedAnswer: Record<string, string | number | null>; // key: mcq.id, value: selected option
+  onAnswerSelect: (mcqId: string | number, answer: string) => void;
   questionNumber: number;
 }
 
@@ -70,6 +78,14 @@ export default function ListeningQuestion({
       audioElement.removeEventListener('ended', handleAudioEnded);
     };
   }, []);
+
+  // Defensive: Ensure question and context exist
+  if (!question || !question.context) {
+    return <div className={styles.questionSection}>Dữ liệu câu hỏi không hợp lệ.</div>;
+  }
+
+  // Defensive: Ensure mcqs is an array if present
+  const listeningMcqs = Array.isArray(question.mcqs) ? question.mcqs : [];
 
   const formatTime = (time: number) => {
     if (isNaN(time)) return '0:00';
@@ -167,24 +183,37 @@ export default function ListeningQuestion({
     <div className={styles.questionSection}>
       {renderAudioPlayer(question.context.audioFile)}
 
-      <h2 className={styles.questionNumber}>
-        {questionNumber}. {question.question}
-      </h2>
       <div className={styles.optionsSection}>
-        {question.options.map((option, index) => (
-          <button
-            key={index}
-            className={`${styles.optionButton} ${
-              selectedAnswer === option ? styles.selected : ''
-            }`}
-            onClick={() => onAnswerSelect(option)}
-          >
-            <div className={styles.optionRadio}>
-              {selectedAnswer === option && <div className={styles.optionRadioFill} />}
+        {listeningMcqs.length > 0 ? (
+          listeningMcqs.map((mcq, mcqIndex) => (
+            <div key={mcq?.id ?? mcqIndex} className={styles.listeningMcqBlock} style={{ marginBottom: '2rem' }}>
+              <h2 className={styles.questionNumber}>
+                {questionNumber + mcqIndex}. {mcq?.question ?? ''}
+              </h2>
+              <div
+                className={styles.optionsList}
+                style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
+              >
+                {(Array.isArray(mcq?.options) ? mcq.options : []).map((option: string, optionIndex: number) => (
+                  <button
+                    key={optionIndex}
+                    className={`${styles.optionButton} ${
+                      selectedAnswer?.[mcq.id] === option ? styles.selected : ''
+                    }`}
+                    onClick={() => onAnswerSelect(mcq.id, option)}
+                  >
+                    <div className={styles.optionRadio}>
+                      {selectedAnswer?.[mcq.id] === option && <div className={styles.optionRadioFill} />}
+                    </div>
+                    <span className={styles.optionText}>{option}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-            <span className={styles.optionText}>{option}</span>
-          </button>
-        ))}
+          ))
+        ) : (
+          <div>Không có câu hỏi nào được tìm thấy.</div>
+        )}
       </div>
     </div>
   );

@@ -197,3 +197,122 @@ export async function getExamDetails(examId: string, token: string): Promise<Exa
   const data = await response.json();
   return data.data;
 }
+
+// Submit Exam Result interfaces and function
+export interface SubmitExamAnswer {
+  questionId: string;
+  questionType: 'mcq' | 'fillInBlank' | 'readingMcq' | 'listeningMcq';
+  userAnswer?: string; // for mcq, fillInBlank
+  userAnswers?: Record<string, string>; // for readingMcq, listeningMcq
+}
+
+export interface SubmitExamResultRequest {
+  examId: string;
+  userId: string;
+  answers: SubmitExamAnswer[];
+  score: number;
+  totalQuestions: number;
+  timeSpent?: number; // seconds
+  completedAt: string;
+}
+
+export interface SubmitExamResultResponse {
+  code: number;
+  message: string;
+  data?: {
+    id: string;
+    score: number;
+    percentage: number;
+    rank?: string;
+  };
+}
+
+export async function submitExamResult(
+  request: SubmitExamResultRequest,
+  token: string
+): Promise<SubmitExamResultResponse> {
+  const response = await fetch('http://localhost:9000/exam-results', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+// Get Exam Result Details interfaces and function
+export interface ExamResultDetail {
+  id: string;
+  examId: string;
+  userId: string;
+  score: number;
+  totalQuestions: number;
+  percentage: number;
+  timeSpent: number;
+  completedAt: string;
+  exam: {
+    title: string;
+    description: string;
+  };
+  userAnswers: Array<{
+    questionId: string;
+    questionType: 'mcq' | 'fillInBlank' | 'readingMcq' | 'listeningMcq';
+    userAnswer?: string;
+    userAnswers?: Record<string, string>;
+    isCorrect: boolean;
+    question: {
+      content: string;
+      options?: string[];
+      correctAnswer?: string;
+      explanation?: string;
+    };
+  }>;
+}
+
+export async function getExamResult(
+  examResultId: string,
+  token: string
+): Promise<ExamResultDetail> {
+  const response = await fetch(`http://localhost:9000/exam-results/${examResultId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.data;
+}
+
+export async function getUserExamResults(
+  userId: string,
+  token: string
+): Promise<ExamResultDetail[]> {
+  const response = await fetch(`http://localhost:9000/users/${userId}/exam-results`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.data.items;
+}

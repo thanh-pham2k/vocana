@@ -1,0 +1,297 @@
+/* Exam Detail View - Reading/Listening Questions */
+.detailContainer {
+  background: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: white;
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.backButton {
+  padding: 0.5rem;
+  font-size: 1.1rem;
+  color: #374151;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  
+  &:hover {
+    background: #f3f4f6;
+  }
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+  transform: translateX(-1rem);
+}
+
+.content {
+  flex: 1;
+  padding: 0;
+}
+
+/* Media Section */
+.mediaCard {
+  background: white;
+  margin: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.audioContainer {
+  padding: 1rem;
+}
+
+.audioPlayer {
+  width: 100%;
+}
+
+/* Reading Passage */
+.passageCard {
+  background: white;
+  margin: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.passageHeader {
+  background: #dbeafe;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #bfdbfe;
+}
+
+.passageHeaderContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.passageIcon {
+  font-size: 1rem;
+}
+
+.passageTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e40af;
+}
+
+.passageContent {
+  padding: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+/* Questions Section */
+.questionsCard {
+  background: white;
+  margin: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.questionsHeader {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.questionsTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+  color: #1f2937;
+}
+
+.questionsList {
+  /* No additional styles needed - inherits from parent */
+}
+
+.questionItem {
+  border-bottom: 1px solid #f3f4f6;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.questionContainer {
+  padding: 1rem;
+}
+
+.questionText {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  color: #1f2937;
+}
+
+/* Options */
+.optionsContainer {
+  margin-bottom: 1rem;
+}
+
+.option {
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  
+  &.correct {
+    border: 2px solid #22c55e;
+    background: #f0fdf4;
+  }
+}
+
+.optionContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.optionText {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.optionIndicators {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.userChoiceBadge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  background: #fee2e2;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.correctBadge {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #22c55e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.correctIcon {
+  font-size: 12px;
+  color: white;
+  font-weight: bold;
+}
+
+/* Explanation */
+.explanationButton {
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
+  background: #eff6ff;
+  border-radius: 6px;
+  width: 100%;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.explanationContent {
+  border-top: 1px solid #f3f4f6;
+  padding: 1rem;
+  background: #f8fafc;
+}
+
+.explanationBox {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.explanationTitle {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.explanationText {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #4b5563;
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+  .header {
+    padding: 0.75rem;
+  }
+  
+  .mediaCard,
+  .passageCard,
+  .questionsCard {
+    margin: 0.75rem;
+  }
+  
+  .passageContent {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+  
+  .questionContainer {
+    padding: 0.75rem;
+  }
+  
+  .option {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .explanationButton {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+  }
+} 
