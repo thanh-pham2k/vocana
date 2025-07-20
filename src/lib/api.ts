@@ -96,6 +96,9 @@ const mockUserProgress: UserProgress = {
   totalLessons: 5,
 };
 
+// const base_url = 'http://localhost:9000';
+const base_url = 'https://vocana-be.onrender.com';
+
 // Simulate API delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -127,7 +130,7 @@ export async function updateCourseProgress(
 
 // Mock authentication
 export async function login(username: string, password: string): Promise<LoginResponse> {
-  const response = await fetch("http://localhost:9000/auth/login", {
+  const response = await fetch(`${base_url}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -138,7 +141,7 @@ export async function login(username: string, password: string): Promise<LoginRe
 }
 
 export async function getMe(token: string) {
-  const res = await fetch('http://localhost:9000/auth/me', {
+  const res = await fetch(`${base_url}/auth/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -148,7 +151,7 @@ export async function getMe(token: string) {
 }
 
 export async function getExams(token: string): Promise<Exam[]> {
-  const response = await fetch('http://localhost:9000/exam', {
+  const response = await fetch(`${base_url}/exam`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -163,7 +166,7 @@ export async function getExams(token: string): Promise<Exam[]> {
 }
 
 export async function getUsers(token: string): Promise<User[]> {
-  const response = await fetch('http://localhost:9000/users', {
+  const response = await fetch(`${base_url}/users`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -238,7 +241,7 @@ export async function createExam(
   examData: CreateExamRequest,
   token: string
 ): Promise<CreateExamResponse> {
-  const response = await fetch('http://localhost:9000/exam', {
+  const response = await fetch(`${base_url}/exam`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -303,7 +306,7 @@ export interface ExamDetail {
 }
 
 export async function getExamDetails(examId: string, token: string): Promise<ExamDetail> {
-  const response = await fetch(`http://localhost:9000/exam/${examId}`,
+  const response = await fetch(`${base_url}/exam/${examId}`,
   {
     method: 'GET',
     headers: {
@@ -351,7 +354,7 @@ export async function submitExamResult(
   request: SubmitExamResultRequest,
   token: string
 ): Promise<SubmitExamResultResponse> {
-  const response = await fetch('http://localhost:9000/exam-results', {
+  const response = await fetch(`${base_url}/exam-results`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -401,7 +404,7 @@ export async function getExamResult(
   examResultId: string,
   token: string
 ): Promise<ExamResultDetail> {
-  const response = await fetch(`http://localhost:9000/exam-results/${examResultId}`, {
+  const response = await fetch(`${base_url}/exam-results/${examResultId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -421,7 +424,7 @@ export async function getUserExamResults(
   userId: string,
   token: string
 ): Promise<ExamResultDetail[]> {
-  const response = await fetch(`http://localhost:9000/users/${userId}/exam-results`, {
+  const response = await fetch(`${base_url}/users/${userId}/exam-results`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
